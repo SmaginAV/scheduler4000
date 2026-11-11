@@ -1,0 +1,1661 @@
+﻿
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>scheduler4000</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src data:">
+<style>
+*{box-sizing:border-box}[hidden]{display:none!important}html,body{height:100%;margin:0;overflow:hidden}
+body{font:14px Arial,sans-serif;background:#f5f7fa;color:#243447;display:flex;flex-direction:column}
+button,input,select{font:inherit;color:#243447;border:1px solid #bdc9d6;border-radius:5px;background:#fff;padding:7px 10px}
+button{cursor:pointer}button:hover{background:#edf3fa}button:disabled{opacity:.45;cursor:default}
+header{display:flex;align-items:flex-end;flex-shrink:0;background:#fff;padding:14px 18px;border-bottom:1px solid #dbe3ed}
+h1{font-size:20px;margin:0 0 5px}#dayTitle{font-size:13px;color:#63758b}.metrics{display:flex;margin-left:auto}
+.metric{min-width:150px;padding:0 18px;border-left:1px solid #e2e8f0}.metric span{display:block;color:#63758b;font-size:12px;margin-bottom:5px}.metric strong{font-size:23px;font-weight:600}
+#outlook{flex-shrink:0;padding:10px 18px;background:#eaf3ed;border-bottom:1px solid #d5e6da;color:#275d3b}
+#outlook.warning{background:#fff1e9;color:#943d1e;border-color:#f1d2c1}
+.chart-heading{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;flex-shrink:0;padding:10px 18px 0;background:#fff}.chart-heading h2{font-size:15px;margin:0}#loadCaption{display:flex;align-items:baseline;gap:12px;margin-left:282px}
+.nav{margin-left:auto;display:flex;align-items:center}.nav>*{margin-left:6px}.nav button{padding:5px 9px}
+#rangeLabel{min-width:110px;text-align:center;font-variant-numeric:tabular-nums}#heatmap{height:155px;flex-shrink:0;background:#fff}
+.toolbar{display:flex;align-items:center;flex-shrink:0;padding:8px 14px;border-top:1px solid #dbe3ed;border-bottom:1px solid #dbe3ed;background:#f4f7fb}.toolbar>*{margin-right:12px}
+#filter{width:240px}.toolbar label{font-size:12px;white-space:nowrap}.toolbar input[type=checkbox]{vertical-align:middle}
+.timeline-shell{flex:1;min-height:0;display:flex;flex-direction:column;background:#fff}
+#timeline{flex:1;min-height:0;overflow:hidden}.time-scroll-row{display:flex;flex-shrink:0;align-items:center;background:#edf2f7;border-top:1px solid #dbe3ed}.time-scroll-row label{width:120px;padding-left:14px;font-size:12px;color:#52677f}#timeScroll{flex:1;min-width:0;height:20px;overflow-x:scroll;overflow-y:hidden}#timeScrollTrack{height:1px;width:100%}
+::-webkit-scrollbar{width:16px;height:16px}::-webkit-scrollbar-track{background:#e4eaf1}::-webkit-scrollbar-thumb{background:#8a9db3;border:3px solid #e4eaf1;border-radius:8px}::-webkit-scrollbar-thumb:hover{background:#607d9d}
+.bottom-line{flex-shrink:0;display:flex;align-items:center;padding:7px 14px;font-size:12px;color:#687b90;background:#fff;border-top:1px solid #dbe3ed}.bottom-line button{margin-left:auto;padding:4px 9px}
+#status{margin-right:12px}#quality{flex:1}#offlineActions{flex-shrink:0;padding:8px 14px;background:#eef3fa}#offlineActions button{margin-right:8px}
+.job-label{display:flex;align-items:center;max-width:280px;white-space:normal}.job-label input{margin:0 8px 0 0;flex-shrink:0}.job-label.changed{border-left:4px solid #d49524;padding-left:5px}.job-label.disabled{color:#8998aa}
+.job-label{display:grid;grid-template-columns:22px minmax(0,1fr);align-items:start}.job-label>input{grid-column:1;grid-row:1 / span 3;margin-top:6px}.job-label>.job-settings,.job-more,.job-extra{grid-column:2}.job-more{border:0;background:transparent;color:#436d9d;font-size:11px;padding:3px 0;text-align:left}.job-extra{font-size:11px;line-height:1.5;color:#63758b;white-space:pre-line;word-break:break-word}
+.vis-label strong{display:inline-block;max-width:270px;white-space:normal;word-break:break-word}.vis-label .vis-inner{padding:7px!important}
+.vis-item.forecast{border-color:#4f79b5;color:#fff}.vis-item.forced{border-color:#b73d3d;border-style:dashed}.vis-item.fact{opacity:.22;background:#8292a7;border-color:#8292a7}.vis-item.fact.failed{background:#d75454}.vis-item.fact.active{background:#e2a222}
+.vis-item.start-handle{background:#fff!important;color:#204e83;border:2px solid #547db4;border-radius:5px;font-weight:normal;font-size:13px;cursor:grab;padding:4px 8px;z-index:5}.vis-item.vis-dot.start-handle,.vis-item.vis-line.start-handle{display:none}.vis-item.start-handle .vis-item-content{padding:0!important}
+.vis-tooltip{white-space:pre-line;max-width:520px;font-size:13px}.vis-item .vis-item-content{padding:2px}
+#detailsPanel{position:fixed;top:0;right:0;bottom:0;width:620px;max-width:95%;z-index:10000;background:#fff;box-shadow:-4px 0 24px #0003;overflow:auto;padding:18px}
+#detailsPanel h2{font-size:18px;margin:0 0 12px}#closeDetails{float:right}#detailsPanel p{line-height:1.5}#optimizationResult{white-space:pre-line;line-height:1.6;background:#f0f5fb;padding:12px;border-radius:5px;margin:12px 0}
+#optimizationNotice{flex-shrink:0;padding:9px 14px;background:#edf3fa;border-bottom:1px solid #dbe3ed;font-size:12px;line-height:1.5}
+.timeline-shell{position:relative}#dragMarker{position:absolute;top:0;bottom:0;border-left:1px dashed #285f9b;z-index:20;pointer-events:none}#dragTime{position:absolute;left:5px;top:5px;padding:5px 9px;background:#285f9b;color:white;border-radius:4px;font:14px monospace;white-space:nowrap}
+#timeGuide{position:fixed;border-left:1px dashed #000;pointer-events:none;z-index:25}body.editor-document #timeGuide{display:none}
+.job-settings{border:0;background:transparent;padding:0;text-align:left;font-size:13px;white-space:normal}.job-settings small{display:block;color:#436d9d;font-size:11px;margin-top:3px}.editor-shade{position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(25,42,62,.35);z-index:11000;display:flex;align-items:center;justify-content:center}.editor-card{width:620px;max-width:94%;max-height:90%;overflow:auto;background:white;border-radius:8px;padding:22px;box-shadow:0 8px 40px #0004}.editor-card h2{font-size:18px;margin:0 0 12px}.editor-card p{line-height:1.5}.editor-card fieldset{border:1px solid #dbe3ed;border-radius:5px;margin:14px 0;padding:12px}.editor-card label{display:block;margin:8px 0}.editor-card label span{display:inline-block;min-width:160px}.editor-card input{width:115px}.editor-card select{margin-left:6px}.editor-actions{margin-top:18px}.editor-actions button{margin-right:8px}.editor-actions button:first-child{background:#285f9b;color:white}#editorError{color:#a42b2b;line-height:1.5}
+.editor-choice{display:inline-flex;flex-wrap:wrap;vertical-align:middle;max-width:440px;margin-left:5px}.editor-choice button{margin:2px;font-size:12px;padding:6px 8px}.editor-choice button.selected{background:#e0ecfa;border-color:#547db4;color:#204e83}
+.editor-card input[type=checkbox]{width:auto;margin-right:8px}.job-label.disabled .job-settings{color:#8998aa}
+table{border-collapse:collapse;width:100%;font-size:12px}th,td{padding:8px 6px;text-align:left;border-bottom:1px solid #dce3ec;vertical-align:top}th{background:#edf2f8}
+.heatmap-shell{position:relative;height:155px;flex-shrink:0}.collision-overlay{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:2}.collision-key{margin-left:14px;color:#8b4e54;font-size:12px}.collision-key:before{content:'';display:inline-block;width:14px;height:10px;margin-right:5px;background:rgba(215,45,55,.2);vertical-align:middle}
+#creationFields .editor-field{flex-wrap:nowrap}#creationFields input,#creationFields select{flex:1;min-width:0;width:auto;margin-left:0}#creationFields p{color:#667789;margin:8px 0 10px}
+</style>
+<style>
+#timeline{position:relative;z-index:1}#ganttRuns{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+#ganttTooltip{position:absolute;z-index:18;pointer-events:none;white-space:pre-line;max-width:350px;padding:9px 12px;background:white;box-shadow:0 2px 10px #0003;border-radius:5px;font-size:12px;line-height:1.5}
+.editor-help{padding:10px 12px;background:#eef4fa;border-radius:5px;line-height:1.5;min-height:62px}.editor-window-nav{display:flex;justify-content:space-between;gap:10px;margin-top:12px}.editor-window-nav button{font-size:12px}
+.editor-card{width:780px;max-height:96%;display:flex;flex-direction:column;overflow:hidden;padding:18px 22px}.editor-card>*{flex-shrink:0}.editor-card h2{margin-bottom:6px}.editor-card p{margin:6px 0;font-size:12px;line-height:1.4}.editor-card label{margin:6px 0}.editor-card label span{min-width:155px}.editor-card fieldset{position:relative;margin:8px 0;padding:10px 12px}.editor-card legend{padding:0 6px}.editor-card #editorWindows{flex:1;min-height:0;overflow:auto;padding-top:3px}.editor-help{min-height:46px;padding:8px 10px}.editor-window-nav{position:absolute;right:8px;top:-20px;margin:0;gap:4px;background:#fff}.editor-window-nav button{padding:2px 7px}.editor-footer{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:8px}.editor-footer .editor-actions{margin:0 0 0 auto;white-space:nowrap}.editor-actions button:last-child{margin-right:0}
+.editor-field{display:flex;align-items:center;flex-wrap:wrap;gap:5px;margin:8px 0}.editor-field>span{flex:0 0 150px}.editor-field .editor-choice{max-width:none;margin:0}.editor-field input{flex:0 0 115px}
+body.editor-document{background:#fff}body.editor-document>header,body.editor-document>#outlook,body.editor-document>.chart-heading,body.editor-document>.heatmap-shell,body.editor-document>.toolbar,body.editor-document>.timeline-shell,body.editor-document>.time-scroll-row,body.editor-document>.bottom-line{display:none}body.editor-document .editor-shade{position:static;background:#fff;height:100%;padding:0}body.editor-document .editor-card{width:100%;max-width:none;max-height:100%;height:100%;border-radius:0;box-shadow:none;padding:20px 24px}
+.vis-item.start-handle{top:17px!important;font-size:11px;padding:2px 5px;border-width:1px}.job-label.disabled .job-settings{color:#718096}
+#creationFields .editor-field{flex-wrap:nowrap}#creationFields input,#creationFields select{flex:1;min-width:0;width:auto;margin-left:0}#creationFields p{color:#667789;margin:8px 0 10px}
+</style>
+@@VENDOR@@
+</head><body>
+<div id="collectionProgress" hidden role="status" aria-live="polite" style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:20000;background:rgba(245,247,250,.94);display:flex;align-items:center;justify-content:center">
+  <div style="width:460px;max-width:90%;padding:28px;background:white;border:1px solid #dbe3ed;border-radius:10px;box-shadow:0 8px 32px #24344718">
+    <strong style="font-size:18px">Загружаем историю заданий</strong>
+    <p id="collectionStage"></p>
+    <div style="height:7px;overflow:hidden;background:#e6ebf0;border-radius:5px"><div class="collectionRunner"></div></div>
+    <p id="collectionElapsed" style="color:#63758b"></p>
+    <small>Для отмены нажмите «Отменить загрузку» в командной панели. Прежний график сохранится.</small>
+  </div>
+</div>
+<style>.collectionRunner{height:100%;width:35%;background:#708090;animation:collectionMove 1.4s ease-in-out infinite alternate}@keyframes collectionMove{from{transform:translateX(-100%)}to{transform:translateX(285%)}}</style>
+<header><div><h1>Расписание заданий</h1><div id="dayTitle">Загрузите данные для начала работы</div></div><div class="metrics"><div class="metric"><span>Максимум за день</span><strong id="peak">-</strong></div><div class="metric"><span>Время выше лимита</span><strong id="overload">-</strong></div><div class="metric"><span>Изменено расписаний</span><strong id="changed">0</strong></div></div></header>
+<div id="outlook">Нажмите «1. Загрузить задания» в верхней панели 1С.</div>
+<div id="optimizationNotice" hidden role="status"></div>
+<div id="offlineActions" hidden><button id="optimize">Распределить запуски</button><button id="cancel" disabled>Остановить расчет</button><button id="rollback">Отменить изменения</button><button id="apply" hidden>Сохранить расписания в базе</button><button id="export">Сохранить отчет</button></div>
+<div class="chart-heading"><div id="loadCaption"><h2>Сколько заданий работает одновременно</h2><span class="collision-key">Выше лимита</span></div><div class="nav"><button id="panLeft" title="Предыдущий участок времени">◀</button><span id="rangeLabel"></span><button id="panRight" title="Следующий участок времени">▶</button><button id="showDay">Весь день</button><button id="zoomIn" title="Показать более короткий промежуток">＋</button><button id="zoomOut" title="Показать более длинный промежуток">−</button></div></div>
+<div class="heatmap-shell"><div id="heatmap"></div><canvas id="chartCollisions" class="collision-overlay" aria-hidden="true"></canvas></div>
+<div class="toolbar"><input id="filter" type="search" placeholder="Найти задание по названию"><label title="Показать задания, включенные в расписании"><input id="enabledOnly" type="checkbox" checked> Только активные</label><select id="grouping"><option value="none">Без группировки</option><option value="subsystem">По разделам системы</option><option value="duration">По длительности</option></select></div>
+<div class="timeline-shell"><canvas id="ganttRuns" aria-hidden="true"></canvas><div id="timeline" aria-hidden="true"></div><canvas id="ganttCollisions" class="collision-overlay" aria-hidden="true"></canvas><div id="ganttTooltip" hidden></div><div id="dragMarker" hidden><span id="dragTime"></span></div></div>
+<div id="timeGuide" hidden aria-hidden="true"></div>
+<div class="time-scroll-row"><label for="timeScroll">Время суток ↔</label><div id="timeScroll" tabindex="0" role="scrollbar" aria-label="Общий горизонтальный сдвиг графиков" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="86400" aria-valuenow="0"><div id="timeScrollTrack"></div></div></div>
+<div class="bottom-line"><span id="status">Данные еще не загружены</span><span id="quality"></span><button id="openDetails">Подробности</button></div>
+<aside id="detailsPanel" hidden><button id="closeDetails">Закрыть</button><h2>Подробности расчета</h2><p>Это прогноз одновременной работы заданий, а не замер загрузки серверов. Серые полосы показывают вчерашнее выполнение; цветные - прогноз. Перетащите крупную метку со временем, чтобы изменить начало запуска. Флажок у названия запрещает автоматический перенос задания.</p><div id="sourceDetails"></div><div id="optimizationResult"></div><p>Оценка равномерности запусков: <span id="objective">-</span>. Меньшее значение означает более ровное распределение нагрузки.</p><section id="pauseSection" hidden><h3>Предложения паузы между запусками</h3><p>Эти предложения меняют частоту выполнения и принимаются отдельно.</p><div id="pauseProposals"></div></section><h3>Сведения о заданиях</h3><label><input id="technicalNames" type="checkbox"> Показать технические имена</label><div id="jobDetails"></div></aside>
+<button id="v8bridge" style="display:none" type="button"></button>
+<div id="scheduleEditor" class="editor-shade" hidden><section class="editor-card" role="dialog" aria-labelledby="editorTitle"><h2 id="editorTitle"></h2><p>Настройте запуск, затем проверьте результат в прогнозе.</p><label><input id="editorEnabled" type="checkbox"> Задание включено</label><p>Расписание и активность изменятся в базе только после «3. Сохранить расписания».</p><div id="creationFields" hidden></div><div id="editorWindows"></div><p id="editorError" role="alert"></p><div class="editor-footer"><button id="detailedSchedule">Дни, даты и окна…</button><div class="editor-actions"><button id="saveEditor">Обновить прогноз</button><button id="cancelEditor">Отмена</button></div></div></section></div>
+<script id="scheduler4000-core">
+(function (root) {
+  'use strict';
+
+  // Время модели измеряется в секундах; графический шаг не меняет точную цель.
+  function analyzeConcurrency(intervals, dayStart, dayEnd, limit, step) {
+    if (!Number.isFinite(dayStart) || !Number.isFinite(dayEnd) || dayEnd <= dayStart) {
+      throw new Error('Недопустимые границы расчета нагрузки.');
+    }
+    if (!Number.isInteger(limit) || limit <= 0 || (step !== 10 && step !== 60)) {
+      throw new Error('Проверьте лимит потоков и шаг графика.');
+    }
+    var events = [{time: dayStart, delta: 0}, {time: dayEnd, delta: 0}];
+    intervals.forEach(function (interval) {
+      if (!Number.isFinite(interval.start) || !Number.isFinite(interval.end) ||
+          interval.end < interval.start) {
+        throw new Error('Нагрузка содержит некорректный интервал.');
+      }
+      var start = Math.max(dayStart, interval.start);
+      var end = Math.min(dayEnd, interval.end);
+      if (start < end) {
+        events.push({time: start, delta: 1}, {time: end, delta: -1});
+      }
+    });
+    events.sort(function (left, right) {
+      return left.time - right.time || left.delta - right.delta;
+    });
+    var segments = [], peak = 0, objective = 0, overloadSeconds = 0;
+    var load = 0, previous = dayStart, index = 0;
+    while (index < events.length) {
+      var time = events[index].time;
+      if (time > previous) {
+        segments.push({start: previous, end: time, load: load});
+        peak = Math.max(peak, load);
+        objective += load * load * (time - previous);
+        if (load > limit) { overloadSeconds += time - previous; }
+      }
+      // Все события одного момента объединяются до следующего полуоткрытого участка.
+      while (index < events.length && events[index].time === time) {
+        load += events[index].delta;
+        index += 1;
+      }
+      previous = time;
+    }
+    var samples = [], segmentIndex = 0;
+    for (var begin = dayStart; begin < dayEnd; begin += step) {
+      var finish = Math.min(begin + step, dayEnd), maximum = 0;
+      while (segmentIndex < segments.length && segments[segmentIndex].end <= begin) {
+        segmentIndex += 1;
+      }
+      var cursor = segmentIndex;
+      while (cursor < segments.length && segments[cursor].start < finish) {
+        maximum = Math.max(maximum, segments[cursor].load);
+        cursor += 1;
+      }
+      samples.push({start: begin, end: finish, load: maximum, collision: maximum > limit});
+    }
+    return {peak: peak, objective: objective, overloadSeconds: overloadSeconds,
+      segments: segments, samples: samples};
+  }
+
+  var DAY = 86400;
+
+  // Соседние короткие запуски объединяются только для рисования, без изменения модели.
+  function visibleRunMarks(intervals, start, end, width) {
+    var marks=[], low=0, high=intervals.length;
+    while (low<high) { var middle=(low+high)>>>1;
+      if ((intervals[middle].searchEnd===undefined?intervals[middle].displayEnd:intervals[middle].searchEnd)<start) { low=middle+1; } else { high=middle; }
+    }
+    for (var index=low; index<intervals.length; index++) {
+      var run=intervals[index]; if(run.displayStart>=end) { break; }
+      if(run.displayEnd<=start && run.displayStart!==run.displayEnd) { continue; }
+      var x=Math.max(0,(run.displayStart-start)/(end-start)*width);
+      var right=Math.min(width,(run.displayEnd-start)/(end-start)*width);
+      var tiny=right-x<3, previous=marks[marks.length-1];
+      if(previous && (((run.fact || !previous.zero && run.start!==run.end) && x<=previous.right+.01) ||
+          tiny && previous.tiny && x-previous.right<=2 && previous.zero===(run.start===run.end))) {
+        previous.right=Math.max(previous.right,x+1,right); previous.count++; previous.last=run.start;
+      } else { marks.push({x:x,right:Math.max(x+1,right),tiny:tiny,count:1,first:run.start,last:run.start,
+        zero:run.start===run.end,run:run}); }
+    }
+    return marks;
+  }
+  function visibleTimeRange(rows,start,end) {
+    var low=0,high=rows.length;
+    while(low<high) {var middle=(low+high)>>>1;if(rows[middle].end<=start) {low=middle+1;} else {high=middle;}}
+    var first=low;while(low<rows.length&&rows[low].start<end) {low++;}
+    return rows.slice(first,low);
+  }
+
+  // Искусственная UTC-ось сохраняет календарные компоненты шкалы сеанса ИБ.
+  function parseMoment(text) {
+    if (text === null || text === undefined) { return null; }
+    if (typeof text !== 'string' || !/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2})?$/.test(text)) {
+      throw new Error('Недопустимый момент в шкале сеанса ИБ.');
+    }
+    var parts = text.match(/\d+/g).map(Number), date = new Date(0);
+    date.setUTCFullYear(parts[0], parts[1] - 1, parts[2]);
+    date.setUTCHours(parts[3] || 0, parts[4] || 0, parts[5] || 0, 0);
+    var canonical = date.toISOString().slice(0, text.length);
+    if (canonical !== text) { throw new Error('Недопустимая календарная дата.'); }
+    return date.getTime() / 1000;
+  }
+
+  function formatMoment(seconds) { return new Date(seconds * 1000).toISOString().slice(0, 19); }
+  function dayStart(seconds) { return Math.floor(seconds / DAY) * DAY; }
+  function timeSeconds(text) {
+    if (typeof text !== 'string' || !/^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/.test(text)) {
+      throw new Error('Время должно иметь формат ЧЧ:ММ:СС.');
+    }
+    var parts = text.split(':').map(Number);
+    return parts[0] * 3600 + parts[1] * 60 + parts[2];
+  }
+  function formatTime(seconds) { return formatMoment(dayStart(0) + seconds).slice(11); }
+  function windows(schedule) {
+    return schedule.dailySchedules && schedule.dailySchedules.length ? schedule.dailySchedules : [schedule];
+  }
+  function monday(day) {
+    var weekDay = new Date(day * 1000).getUTCDay() || 7;
+    return day - (weekDay - 1) * DAY;
+  }
+
+  function calendarAllows(schedule, at, lastStart) {
+    var day = dayStart(at), date = new Date(day * 1000), month = date.getUTCMonth() + 1;
+    if (schedule.startDate && day < parseMoment(schedule.startDate)) { return false; }
+    if (schedule.endDate && day > parseMoment(schedule.endDate)) { return false; }
+    if (schedule.months.length && schedule.months.indexOf(month) === -1) { return false; }
+    var weekDay = date.getUTCDay() || 7, dayNumber = date.getUTCDate();
+    if (schedule.daysOfWeek.length && schedule.daysOfWeek.indexOf(weekDay) === -1) { return false; }
+    var lastDay = new Date((day + (32 - dayNumber) * DAY) * 1000);
+    lastDay.setUTCDate(0);
+    var daysInMonth = lastDay.getUTCDate();
+    var monthDay = schedule.dayOfMonth;
+    if (monthDay > 0 && dayNumber !== monthDay) { return false; }
+    if (monthDay < 0 && dayNumber !== daysInMonth + monthDay + 1) { return false; }
+    var ordinal = schedule.weekDayInMonth;
+    if (ordinal > 0 && Math.floor((dayNumber - 1) / 7) + 1 !== ordinal) { return false; }
+    if (ordinal < 0 && Math.floor((daysInMonth - dayNumber) / 7) + 1 !== -ordinal) { return false; }
+    if (lastStart !== null && lastStart !== undefined) {
+      var difference = (day - dayStart(lastStart)) / DAY;
+      if (difference < 0) { return false; }
+      if (schedule.repeatDays === 0 && difference !== 0) { return false; }
+      if (schedule.repeatDays > 1 && difference < schedule.repeatDays) { return false; }
+      if (schedule.repeatWeeks > 1 && (monday(day) - monday(dayStart(lastStart))) / (7 * DAY) < schedule.repeatWeeks) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function dayParts(window, day) {
+    var start = window.startTimeSet ? timeSeconds(window.startTime) : 0;
+    var end = window.endTimeSet ? timeSeconds(window.endTime) : DAY - 1;
+    var completion = window.completionTimeSet ? timeSeconds(window.completionTime) : null;
+    function part(from, to, anchor) {
+      var deadline = Infinity;
+      if (completion !== null) { deadline = anchor - start + completion + (completion < start ? DAY : 0); }
+      return {from: from, to: Math.min(to, deadline), anchor: anchor, deadline: deadline, window: window};
+    }
+    if (start <= end) { return [part(day + start, day + end, day + start)]; }
+    return [part(day, day + end, day - DAY + start), part(day + start, day + DAY - 1, day + start)];
+  }
+
+  function nextInPart(part, cursor, lastStart, lastEnd, busyEnd) {
+    var window = part.window;
+    var at = Math.max(cursor, part.from, busyEnd === null ? -Infinity : busyEnd);
+    if (lastStart !== null) {
+      if (window.repeatPeriod === 0 && lastStart >= part.anchor) { return null; }
+      if (window.repeatPeriod > 0) { at = Math.max(at, lastStart + window.repeatPeriod); }
+    }
+    if (lastEnd !== null && window.repeatPause > 0) { at = Math.max(at, lastEnd + window.repeatPause); }
+    return at <= part.to ? at : null;
+  }
+
+  // Предикат эталонов: отсутствие аргумента означает известное отсутствие запусков.
+  // Неизвестную историю прикладной симулятор обрабатывает отдельно.
+  function executionRequired(schedule, at, lastStart, lastEnd) {
+    if (typeof at === 'string') { at = parseMoment(at); }
+    lastStart = typeof lastStart === 'string' ? parseMoment(lastStart) : lastStart;
+    lastEnd = typeof lastEnd === 'string' ? parseMoment(lastEnd) : lastEnd;
+    if (lastStart === undefined) { lastStart = null; }
+    if (lastEnd === undefined) { lastEnd = null; }
+    if (!calendarAllows(schedule, at, lastStart)) { return false; }
+    return windows(schedule).some(function (window) {
+      return dayParts(window, dayStart(at)).some(function (part) {
+        return nextInPart(part, at, lastStart, lastEnd, null) === at;
+      });
+    });
+  }
+
+  function durationFor(job, config) {
+    var duration = job.durationMed;
+    if (config.durationMode === 'P95') { duration = job.durationP95; }
+    if (config.durationMode === 'Fixed' || usesFallbackDuration(job,config)) { duration = config.fixedDurationSeconds; }
+    if (config.durationMode === 'Fixed' && duration <= 0) { return null; }
+    return typeof duration === 'number' && Number.isFinite(duration) && duration >= 0 ? Math.ceil(duration) : null;
+  }
+  function usesFallbackDuration(job,config) {
+    if(config.durationMode==='Fixed') {return false;}
+    var measured=config.durationMode==='P95'?job.durationP95:job.durationMed;
+    return !(typeof measured==='number'&&Number.isFinite(measured)&&measured>=0)&&
+      typeof config.fixedDurationSeconds==='number'&&Number.isFinite(config.fixedDurationSeconds)&&config.fixedDurationSeconds>0;
+  }
+
+  function simulateJob(job, config) {
+    var result = {jobId: job.id, status: 'ready', reason: '', intervals: []};
+    function unavailable(status, reason) { result.status = status; result.reason = reason; return result; }
+    if (!job.enabled) { return unavailable('disabled', 'Задание отключено в ИБ.'); }
+    var duration = durationFor(job, config);
+    if (duration === null) { return unavailable('unknown-duration', 'Нет расчетной длительности.'); }
+    if(usesFallbackDuration(job,config)) {result.reason='Нет истории длительности: в прогнозе '+duration+' с из настройки «Без истории, сек».';}
+    var begin = parseMoment(config.simulationDate), finish = begin + DAY;
+    var collectedAt = parseMoment(config.collectedAt || config.simulationDate);
+    var cursor = Math.min(begin, collectedAt), cutoff = cursor;
+    var lastStart = parseMoment(job.lastStart), lastEnd = parseMoment(job.lastEnd);
+    if (lastStart === null && job.historyState !== 'never') {
+      if(!usesFallbackDuration(job,config)&&config.durationMode!=='Fixed') {
+        return unavailable('unknown-history', 'Последний запуск неизвестен; начало расписания не подменяет историю.');
+      }
+      // Это условный сценарий с начала показанного дня, а не восстановленная история запусков.
+      result.status='estimated';result.reason='Условный прогноз без истории: длительность '+duration+
+        ' с; последовательность считается новой с начала показанного дня. Автоматическое распределение этого задания недоступно.';
+      cursor=begin;cutoff=begin;lastEnd=null;
+    }
+    if (lastStart !== null && lastStart >= cutoff) {
+      return unavailable('unknown-history', 'Более поздний факт нельзя использовать как исходное состояние.');
+    }
+    if (lastStart !== null && (lastEnd === null || lastEnd > cutoff || lastEnd < lastStart)) {
+      var measured=config.durationMode==='P95'?job.durationP95:job.durationMed;
+      if(lastEnd!==null || !(measured>0) || usesFallbackDuration(job,config) || duration<=0) {
+        return unavailable('unknown-active', 'Последний запуск еще выполняется; без измеренной положительной длительности прогноз не построен.');
+      }
+      lastEnd=lastStart+duration;
+      if(lastEnd<=cutoff) {lastEnd=cutoff+duration;}
+      result.status='estimated';result.estimateKind='active';result.assumedEnd=formatMoment(lastEnd);
+      result.reason='Условный прогноз: последнее выполнение не завершено. Окончание оценено на '+
+        formatMoment(lastEnd).replace('T',' ')+' по длительности '+duration+' с. Автоматическое распределение недоступно.';
+    }
+    var schedule = job.schedule, jobWindows = windows(schedule), busyEnd = lastEnd;
+    if(result.estimateKind==='active' && lastEnd>begin) {
+      result.intervals.push({id:job.id+':conditional-carry',jobId:job.id,windowId:jobWindows[0].windowId,
+        start:lastStart,end:lastEnd,naturalEnd:lastEnd,displayStart:Math.max(begin,lastStart),displayEnd:Math.min(finish,lastEnd),
+        carryIn:true,forced:false,estimated:true});
+    }
+    for (var day = dayStart(cursor); day < finish; day += DAY) {
+      var parts = [];
+      jobWindows.forEach(function (window, order) {
+        dayParts(window, day).forEach(function (part) { part.order = order; parts.push(part); });
+      });
+      while (cursor < day + DAY) {
+        var chosen = null, at = null;
+        parts.forEach(function (part) {
+          var candidate = nextInPart(part, cursor, lastStart, lastEnd, busyEnd);
+          if (candidate !== null && calendarAllows(schedule, candidate, lastStart) &&
+              (at === null || candidate < at || candidate === at && part.order < chosen.order)) {
+            at = candidate; chosen = part;
+          }
+        });
+        if (at === null) { break; }
+        var window = chosen.window, naturalEnd = at + duration;
+        var end = Math.min(naturalEnd, chosen.deadline);
+        if (window.completionInterval > 0) { end = Math.min(end, at + window.completionInterval); }
+        var interval = {id: job.id + ':' + window.windowId + ':' + at, jobId: job.id,
+          windowId: window.windowId, start: at, end: end, naturalEnd: naturalEnd,
+          forced: end < naturalEnd, carryIn: at < begin,
+          displayStart: Math.max(begin, at), displayEnd: Math.min(finish, end)};
+        if (at < finish && (end > begin || at === end && at >= begin)) { result.intervals.push(interval); }
+        lastStart = at; lastEnd = end; busyEnd = end; cursor = end;
+        // В промежуточные дни одно регулярное окно продвигается арифметически.
+        // Переходящий в целевые сутки запуск и усечение на границе не пропускаются.
+        var effectiveDuration = duration;
+        if (window.completionInterval > 0) { effectiveDuration = Math.min(duration, window.completionInterval); }
+        if (jobWindows.length === 1 && window.repeatPeriod > 0 && schedule.repeatDays <= 1 &&
+            schedule.repeatWeeks <= 1 && end === at + effectiveDuration) {
+          var step = Math.max(window.repeatPeriod, effectiveDuration + window.repeatPause, 1);
+          var limit = Math.min(chosen.to, chosen.deadline - effectiveDuration, begin - Math.max(effectiveDuration, 1));
+          var repetitions = Math.floor((limit - at) / step);
+          if (repetitions > 0) {
+            lastStart = at + repetitions * step; lastEnd = lastStart + effectiveDuration;
+            busyEnd = lastEnd; cursor = lastEnd;
+          }
+        }
+      }
+      cursor = Math.max(cursor, day + DAY);
+    }
+    return result;
+  }
+
+  function simulatePacket(packet) {
+    var jobs = packet.jobs.map(function (job) { return simulateJob(job, packet.config); });
+    var intervals = [];
+    jobs.forEach(function (job) { job.intervals.forEach(function (interval) { intervals.push(interval); }); });
+    var begin = parseMoment(packet.config.simulationDate);
+    return {jobs: jobs, intervals: intervals, load: analyzeConcurrency(intervals, begin, begin + DAY,
+      packet.config.maxThreadsThreshold, packet.config.resolutionSeconds)};
+  }
+
+  // История доступна только для чтения: черновик меняет расписания, а не фактические интервалы.
+  function clone(value) {
+    if(value===null || typeof value!=='object') {return value;}
+    if(Array.isArray(value)) {return value.map(clone);}
+    var result={};Object.keys(value).forEach(function (key) {
+      result[key]=key==='factIntervals'||key==='unmappedIntervals'?value[key]:clone(value[key]);
+    });return result;
+  }
+  function safeJSON(value) {
+    return JSON.stringify(value).replace(/[<>&\u2028\u2029]/g, function (character) {
+      return '\\u' + ('0000' + character.charCodeAt(0).toString(16)).slice(-4);
+    });
+  }
+  function editableStart(window, seconds) {
+    if (seconds < 0 || seconds >= DAY) { return false; }
+    if (!window.endTimeSet) { return true; }
+    var oldStart = window.startTimeSet ? timeSeconds(window.startTime) : 0;
+    var end = timeSeconds(window.endTime);
+    return oldStart <= end ? seconds <= end : seconds > end;
+  }
+  function windowSummary(result) {
+    var summary = Object.create(null);
+    result.intervals.forEach(function (interval) {
+      var row = summary[interval.windowId];
+      if (!row) { row = summary[interval.windowId] = {count: 0, forced: 0, work: 0, visibleWork: 0}; }
+      row.count += 1; row.forced += interval.forced ? 1 : 0;
+      row.work += interval.end - interval.start;
+      row.visibleWork += interval.displayEnd - interval.displayStart;
+    });
+    return summary;
+  }
+  function preservesWork(original, candidate) {
+    var before = windowSummary(original), after = windowSummary(candidate);
+    var keys = Object.keys(before);
+    if (Object.keys(after).length !== keys.length) { return false; }
+    return keys.every(function (key) {
+      var left = before[key], right = after[key];
+      return right && left.count === right.count && right.forced <= left.forced &&
+        right.work >= left.work && right.visibleWork >= left.visibleWork;
+    });
+  }
+
+  function optimizationExclusion(job, result, config) {
+    if (job.pinned) { return {code:'pinned', reason:'Закреплено'}; }
+    if (result.status !== 'ready') { return {code:result.status==='disabled'?'disabled':'history', reason:result.reason}; }
+    var measured = config.durationMode==='P95' ? job.durationP95 : job.durationMed;
+    if (!(typeof measured==='number' && Number.isFinite(measured) && measured>=0)) {
+      return {code:'duration', reason:'Нет подтвержденной длительности; оценка из настроек не распределяется автоматически.'};
+    }
+    if (durationFor(job,config)===0) { return {code:'zero', reason:'Длительность 0 с по истории: вклад в нагрузку отсутствует.'}; }
+    return null;
+  }
+  function optimizationSummary(result) {
+    if (result.cancelled) { return 'Расчет отменен. Прежний черновик сохранен.'; }
+    var changed = result.changedJobIds.length, reasons = {}, seen = Object.create(null);
+    result.excluded.forEach(function (entry) {
+      if (entry.code==='disabled') { return; }
+      var code = entry.code || 'history', key=entry.jobId+'|'+code;
+      if (!seen[key]) { reasons[code]=(reasons[code]||0)+1; seen[key]=true; }
+    });
+    var labels={pinned:'закреплены',history:'история не позволяет точный расчет',duration:'нет измеренной длительности',
+      zero:'длительность 0 секунд',period:'однократный запуск или период меньше минуты'};
+    var text = changed ? 'Распределение завершено. Изменено заданий: '+changed+'.' :
+      result.eligibleWindows ? 'Расписания не изменены: среди проверенных сдвигов нет улучшения без потери запусков.' :
+      'Нет заданий для автоматического распределения.';
+    text += ' Максимум одновременно: '+result.before.peak+' → '+result.after.peak+'.';
+    var skipped=Object.keys(reasons).map(function (code) { return labels[code]+': '+reasons[code]; });
+    return text+(skipped.length?' Пропущены: '+skipped.join('; ')+'.':'');
+  }
+  function pauseProposals(packet, enabled) {
+    if (!enabled) { return []; }
+    var proposals = [];
+    packet.jobs.forEach(function (job) {
+      var before = simulateJob(job, packet.config);
+      if (optimizationExclusion(job,before,packet.config)) { return; }
+      windows(job.schedule).forEach(function (window, index) {
+        var period = window.repeatPeriod;
+        if (period <= 0 || period >= 120 || period === 1 && window.repeatPause === 1) { return; }
+        var candidate = clone(job), candidateWindow = windows(candidate.schedule)[index];
+        candidateWindow.repeatPeriod = 1; candidateWindow.repeatPause = period;
+        var after = simulateJob(candidate, packet.config), duration = durationFor(job, packet.config);
+        proposals.push({jobId: job.id, windowId: window.windowId, newRepeatPeriod: 1, newRepeatPause: period,
+          beforeCount: before.intervals.filter(function (item) { return item.windowId === window.windowId; }).length,
+          afterCount: after.intervals.filter(function (item) { return item.windowId === window.windowId; }).length,
+          nominalIntervalBefore: Math.max(period, duration + window.repeatPause),
+          nominalIntervalAfter: Math.max(1, duration + period)});
+      });
+    });
+    return proposals;
+  }
+
+  // Один детерминированный проход. Рабочая копия публикуется только целиком.
+  function optimizePacket(packet, baselinePacket, control) {
+    control = control || {};
+    baselinePacket = baselinePacket || packet;
+    var working = clone(packet), forecast = simulatePacket(working), before = forecast.load;
+    var tasks = [], excluded = [], evaluated = 0, changed = [], taskIndex = 0, state = null;
+    var begin = parseMoment(packet.config.simulationDate), finish = begin + DAY;
+    var originalById = Object.create(null);
+    baselinePacket.jobs.forEach(function (job) { originalById[job.id] = job; });
+    var order = working.jobs.map(function (job, index) { return {job: job, index: index}; });
+    order.sort(function (left, right) {
+      var difference = (durationFor(right.job, working.config) || 0) - (durationFor(left.job, working.config) || 0);
+      if (difference) { return difference; }
+      return left.job.id < right.job.id ? -1 : left.job.id > right.job.id ? 1 : 0;
+    });
+    order.forEach(function (entry) {
+      var job = entry.job, status = forecast.jobs[entry.index];
+      var exclusion = optimizationExclusion(job,status,working.config);
+      if (exclusion) {
+        excluded.push({jobId: job.id, code:exclusion.code, reason:exclusion.reason}); return;
+      }
+      windows(job.schedule).forEach(function (window, windowIndex) {
+        if (window.repeatPeriod < 60) {
+          excluded.push({jobId: job.id, windowId: window.windowId, code:'period', reason: 'Один запуск или период меньше 60 секунд'}); return;
+        }
+        tasks.push({jobIndex: entry.index, windowIndex: windowIndex});
+      });
+    });
+    var currentLoad = before;
+    function beginTask(task) {
+      var job = working.jobs[task.jobIndex], window = windows(job.schedule)[task.windowIndex];
+      var original = originalById[job.id];
+      if (!original) { throw new Error('Задание отсутствует в исходном снимке.'); }
+      var baselineWindow = windows(original.schedule).find(function (item) { return item.windowId === window.windowId; });
+      if (!baselineWindow) { throw new Error('Окно отсутствует в исходном снимке.'); }
+      var currentTime = window.startTimeSet ? timeSeconds(window.startTime) : 0;
+      // После ручного переноса сохраняем число запусков текущего черновика, а не прежнего снимка.
+      var baseTime = currentTime;
+      var otherIntervals = forecast.intervals.filter(function (item) { return item.jobId !== job.id; });
+      return {job: job, window: window, baseTime: baseTime, currentTime: currentTime, phase: 0,
+        originalResult: forecast.jobs[task.jobIndex], otherIntervals: otherIntervals,
+        bestObjective: currentLoad.objective, bestTime: currentTime, bestJob: null, bestResult: null};
+    }
+    function evaluate(task) {
+      var seconds = state.baseTime + state.phase, phase = state.phase;
+      state.phase += 5; evaluated += 1;
+      if (seconds === state.currentTime || !editableStart(state.window, seconds)) { return; }
+      var candidate = clone(state.job), window = windows(candidate.schedule)[task.windowIndex];
+      window.startTime = formatTime(seconds); window.startTimeSet = true;
+      var candidateResult = simulateJob(candidate, working.config);
+      if (candidateResult.status !== 'ready' || !preservesWork(state.originalResult, candidateResult)) { return; }
+      var all = state.otherIntervals.concat(candidateResult.intervals);
+      var load = analyzeConcurrency(all, begin, finish, working.config.maxThreadsThreshold, working.config.resolutionSeconds);
+      var objective = load.objective;
+      if (objective >= currentLoad.objective && !state.bestJob) { return; }
+      var distance = Math.abs(seconds - state.currentTime), bestDistance = Math.abs(state.bestTime - state.currentTime);
+      var preferred = objective < state.bestObjective || objective === state.bestObjective &&
+        (distance < bestDistance || distance === bestDistance && phase < state.bestTime - state.baseTime);
+      if (preferred) {
+        state.bestObjective = objective; state.bestTime = seconds; state.bestJob = candidate; state.bestResult = candidateResult;
+      }
+    }
+    function finishTask(task) {
+      if (state.bestJob) {
+        working.jobs[task.jobIndex] = state.bestJob;
+        forecast.jobs[task.jobIndex] = state.bestResult;
+        forecast.intervals = state.otherIntervals.concat(state.bestResult.intervals);
+        currentLoad = analyzeConcurrency(forecast.intervals, begin, finish,
+          working.config.maxThreadsThreshold, working.config.resolutionSeconds);
+        if (changed.indexOf(state.job.id) === -1) { changed.push(state.job.id); }
+      }
+      taskIndex += 1; state = null;
+    }
+    return new Promise(function (resolve, reject) {
+      function portion() {
+        try {
+          if (control.cancelled) { resolve({cancelled: true}); return; }
+          var started = Date.now(), budget = control.sliceMilliseconds === undefined ? 12 : control.sliceMilliseconds;
+          while (taskIndex < tasks.length) {
+            var task = tasks[taskIndex];
+            if (!state) { state = beginTask(task); }
+            evaluate(task);
+            if (state.phase >= state.window.repeatPeriod) { finishTask(task); }
+            if (control.cancelled || Date.now() - started >= budget) { break; }
+          }
+          if (control.onProgress) { control.onProgress({completedWindows: taskIndex, totalWindows: tasks.length, evaluated: evaluated}); }
+          if (control.cancelled) { resolve({cancelled: true}); return; }
+          if (taskIndex < tasks.length) { setTimeout(portion, 0); return; }
+          resolve({cancelled: false, packet: working, before: before, after: currentLoad,
+            changedJobIds: changed, excluded: excluded, evaluated: evaluated, eligibleWindows:tasks.length,
+            pauseProposals: pauseProposals(working, !!control.offerPause)});
+        } catch (error) { reject(error); }
+      }
+      setTimeout(portion, 0);
+    });
+  }
+
+  function collisionRanges(load,limit) {
+    var ranges=[];
+    load.segments.forEach(function (segment) {
+      if (segment.load<=limit) { return; }
+      var last=ranges[ranges.length-1];
+      if (last && last.end===segment.start) { last.end=segment.end; }
+      else { ranges.push({start:segment.start,end:segment.end}); }
+    });
+    return ranges;
+  }
+
+  root.Scheduler4000 = {analyzeConcurrency: analyzeConcurrency, collisionRanges:collisionRanges, parseMoment: parseMoment,
+    formatMoment: formatMoment, timeSeconds: timeSeconds, formatTime: formatTime, windows: windows,
+    executionRequired: executionRequired, durationFor: durationFor, usesFallbackDuration: usesFallbackDuration, simulateJob: simulateJob, simulatePacket: simulatePacket,
+    optimizationSummary:optimizationSummary,visibleTimeRange:visibleTimeRange,
+    editableStart: editableStart, preservesWork: preservesWork, pauseProposals: pauseProposals, optimizePacket: optimizePacket,
+    safeJSON: safeJSON, visibleRunMarks:visibleRunMarks, copyWithSharedHistory:clone};
+}(typeof window === 'undefined' ? globalThis : window));
+</script>
+<script id="scheduler4000-ui">
+(function () {
+  'use strict';
+  var core = window.Scheduler4000, baseline = null, draft = null, forecast = null;
+  var timeline = null, chart = null, items = null, groups = null, groupView = null, control = null, pendingApply = null;
+  var visibleGroups = Object.create(null), filterTimer = null, rangeFrame = null, layoutFrame = null;
+  var rangeOrigin = null, lastScrollLeft = 0, collisionWindows = [];
+  var guideTime = null;
+  var jobLabels=Object.create(null), expandedRows=Object.create(null), paintedRuns=[], paintedFacts=[], paintFrame=null, preferencesTimer=null, loadDetailKey='';
+  var factRuns=Object.create(null),factSource=null,factMappingKey='',runPaintCache=Object.create(null);
+  var chartGrid = {left:300,right:1,top:16,bottom:28};
+  var editorJobId = null, editorRows = [], editorWorking = null, editorWindowIndex = 0, editorOriginal = null, editorPublished = false, editorDocument = false;
+  var proposals = [], bridgeQueue = [], bridgeScheduled = false, range = null, syncingRange = false;
+  var generation = '@@GENERATION@@';
+  function byId(id) { return document.getElementById(id); }
+  function textNode(tag, value) { var node = document.createElement(tag); node.textContent = String(value); return node; }
+  function clearNode(node) { while (node.firstChild) { node.removeChild(node.firstChild); } }
+  function copy(value) { return core.copyWithSharedHistory(value); }
+  var collectionStarted=null,collectionTimer=null;
+  window.showCollectionProgress=function (text) {
+    byId('collectionProgress').hidden=!text;
+    if(!text) {collectionStarted=null;clearTimeout(collectionTimer);collectionTimer=null;return 'JS_OK';}
+    byId('collectionStage').textContent=text;
+    if(collectionStarted===null) {
+      collectionStarted=Date.now();
+      function tick() {
+        if(collectionStarted===null) {return;}
+        var elapsed=Math.floor((Date.now()-collectionStarted)/1000);
+        byId('collectionElapsed').textContent='Прошло: '+Math.floor(elapsed/60)+' мин '+('0'+elapsed%60).slice(-2)+' с';
+        collectionTimer=setTimeout(tick,1000);
+      }
+      tick();
+    }
+    return 'JS_OK';
+  };
+  function uuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (character) {
+      var value = Math.floor(Math.random() * 16); return (character === 'x' ? value : value & 3 | 8).toString(16);
+    });
+  }
+  function jobById(id) { return draft.jobs.find(function (job) { return job.id === id; }); }
+  function windowById(job, id) { return core.windows(job.schedule).find(function (window) { return window.windowId === id; }); }
+  function changes() {
+    var modified = [];
+    draft.jobs.forEach(function (job) {
+      var original = baseline.jobs.find(function (item) { return item.id === job.id; }), windowChanges = [];
+      var reference = job.scheduleToken ? job.editorBaseline : original.schedule;
+      core.windows(job.schedule).forEach(function (window) {
+        var old = core.windows(reference).find(function (entry) { return entry.windowId === window.windowId; });
+        if (window.startTime !== old.startTime || window.repeatPeriod !== old.repeatPeriod || window.repeatPause !== old.repeatPause) {
+          windowChanges.push({windowId: window.windowId, newStartTime: window.startTime,
+            newRepeatPeriod: window.repeatPeriod, newRepeatPause: window.repeatPause});
+        }
+      });
+      if (job.isNew || windowChanges.length || job.scheduleToken && job.scheduleToken !== original.scheduleToken || job.enabled !== original.enabled) {
+        var change = {id: job.id, windowChanges: windowChanges};
+        if (job.scheduleToken) { change.scheduleToken = job.scheduleToken; }
+        if (job.enabled !== original.enabled) { change.newEnabled = job.enabled; }
+        modified.push(change);
+      }
+    });
+    return modified;
+  }
+  function viewState() {
+    return {config: copy(draft.config), pinnedJobIds: draft.jobs.filter(function (job) { return job.pinned; }).map(function (job) { return job.id; })};
+  }
+  function preferences() {
+    var begin=core.parseMoment(draft.config.simulationDate)*1000;
+    return {enabledOnly:byId('enabledOnly').checked,grouping:byId('grouping').value,query:byId('filter').value,
+      technicalNames:byId('technicalNames').checked,pinnedJobIds:viewState().pinnedJobIds,
+      rangeStartSeconds:(range.start-begin)/1000,rangeSpanSeconds:(range.end-range.start)/1000};
+  }
+  function savePreferences() {
+    if(!draft) { return; } clearTimeout(preferencesTimer);
+    preferencesTimer=setTimeout(function () { draft.preferences=preferences(); bridge('preferencesChanged',{preferences:draft.preferences}); },500);
+  }
+  function bridge(event, extra) {
+    if (draft.config.offlineReport) { return; }
+    var payload = {protocolVersion: 1, formSessionId: draft.formSessionId, snapshotId: draft.snapshotId,
+      revision: draft.revision, documentGeneration: generation, event: event};
+    Object.keys(extra || {}).forEach(function (key) { payload[key] = extra[key]; });
+    bridgeQueue.push(JSON.stringify(payload));
+    if (!bridgeScheduled) { bridgeScheduled = true; setTimeout(flushBridge, 0); }
+  }
+  function flushBridge() {
+    if (!bridgeQueue.length) { bridgeScheduled = false; return; }
+    var button = byId('v8bridge'); button.setAttribute('data-payload', bridgeQueue.shift()); button.click();
+    setTimeout(flushBridge, 0);
+  }
+  function notify(event, extra) {
+    if (event!=='optimizationFinished') { byId('optimizationNotice').hidden=true; byId('optimizationResult').textContent=''; }
+    draft.revision += 1;
+    var payload = {modifiedJobs: changes(), viewState: viewState()};
+    Object.keys(extra || {}).forEach(function (key) { payload[key] = extra[key]; });
+    bridge(event || 'draftChanged', payload);
+  }
+  function word(number, one, few, many) {
+    var last = Math.abs(number) % 100;
+    if (last >= 11 && last <= 14) { return many; }
+    last %= 10; return last === 1 ? one : last >= 2 && last <= 4 ? few : many;
+  }
+  function durationText(seconds) {
+    if (!seconds) { return 'Нет превышений'; }
+    var hours = Math.floor(seconds / 3600), minutes = Math.floor(seconds % 3600 / 60), rest = Math.round(seconds % 60), parts = [];
+    if (hours) { parts.push(hours + ' ' + word(hours, 'час', 'часа', 'часов')); }
+    if (minutes) { parts.push(minutes + ' ' + word(minutes, 'минута', 'минуты', 'минут')); }
+    if (rest) { parts.push(rest + ' ' + word(rest, 'секунда', 'секунды', 'секунд')); }
+    return parts.join(' ');
+  }
+  function humanMoment(value) { return value ? value.slice(8, 10) + '.' + value.slice(5, 7) + '.' + value.slice(0, 4) + ', ' + value.slice(11, 19) : 'окончание неизвестно'; }
+  function displayName(job) { return job.name.replace(/^scheduler4000:\s*/, 'Тест: ').replace(/^РегламентноеЗадание\./, '').replace(/([а-я])([А-Я])/g, '$1 $2'); }
+  function subsystemColor(value) {
+    var hash=0;for(var index=0;index<value.length;index++){hash=(hash*31+value.charCodeAt(index))|0;}
+    return 'hsl('+(Math.abs(hash)%360)+',42%,43%)';
+  }
+  function escapeHTML(value) { return String(value).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function alignTimeAxes() {
+    if (!chart || layoutFrame) { return; }
+    layoutFrame = requestAnimationFrame(function () {
+      layoutFrame = null;
+      var center = byId('timeline').querySelector('.vis-panel.vis-center');
+      if (!center) { return; }
+      var bounds = center.getBoundingClientRect(), outer = byId('heatmap').getBoundingClientRect();
+      var left = Math.round(bounds.left - outer.left), right = Math.max(1,Math.round(outer.right - bounds.right));
+      byId('loadCaption').style.marginLeft=Math.max(0,left-18)+'px';
+      if (left !== chartGrid.left || right !== chartGrid.right) {
+        chartGrid.left = left; chartGrid.right = right;
+        chart.setOption({grid:chartGrid});
+        byId('timeScroll').previousElementSibling.style.width = left + 'px';
+        byId('timeScroll').previousElementSibling.style.flexShrink = '0';
+        updateRangeControls(); drawCollisionBands();
+      }
+      drawTimeGuide();
+    });
+  }
+  function drawTimeGuide() {
+    var guide=byId('timeGuide');guide.hidden=true;
+    if(guideTime===null || !range || editorDocument || guideTime<range.start || guideTime>range.end) {return;}
+    var bounds=byId('heatmap').getBoundingClientRect(), bottom=byId('timeline').getBoundingClientRect().bottom;
+    var plotWidth=bounds.right-bounds.left-chartGrid.left-chartGrid.right, top=bounds.top+chartGrid.top;
+    if(plotWidth<=0 || bottom<=top) {return;}
+    guide.style.left=Math.round(bounds.left+chartGrid.left+(guideTime-range.start)/(range.end-range.start)*plotWidth)+'px';
+    guide.style.top=top+'px';guide.style.height=(bottom-top)+'px';guide.hidden=false;
+  }
+  function toggleTimeGuide(event, allowCreate) {
+    if(!draft || editorDocument || guideTime===null&&!allowCreate) {return;}
+    event.preventDefault();event.stopPropagation();
+    if(guideTime!==null) {guideTime=null;drawTimeGuide();return;}
+    var bounds=byId('heatmap').getBoundingClientRect(), x=event.clientX-bounds.left;
+    var plotWidth=bounds.right-bounds.left-chartGrid.left-chartGrid.right;
+    if(plotWidth<=0 || x<chartGrid.left || x>chartGrid.left+plotWidth
+      || event.clientY<bounds.top+chartGrid.top || event.clientY>bounds.bottom-chartGrid.bottom) {return;}
+    guideTime=range.start+(x-chartGrid.left)/plotWidth*(range.end-range.start);drawTimeGuide();
+  }
+  function updateRangeControls(fromScrollbar) {
+    if (!range || !draft) { return; }
+    var begin = core.parseMoment(draft.config.simulationDate) * 1000;
+    byId('rangeLabel').textContent = core.formatMoment(range.start / 1000).slice(11, 16) + ' - ' +
+      (range.end === begin + 86400000 ? '24:00' : core.formatMoment(range.end / 1000).slice(11, 16));
+    byId('panLeft').disabled = range.start <= begin;
+    byId('panRight').disabled = range.end >= begin + 86400000;
+    byId('zoomIn').disabled = range.end - range.start <= 300000;
+    byId('zoomOut').disabled = range.end - range.start >= 86400000;
+    var scroll = byId('timeScroll'), width = scroll.clientWidth;
+    var trackWidth = Math.max(width, Math.round(width * 86400000 / (range.end - range.start)));
+    if (byId('timeScrollTrack').style.width !== trackWidth + 'px') { byId('timeScrollTrack').style.width = trackWidth + 'px'; }
+    var maximum = scroll.scrollWidth - width, available = 86400000 - (range.end - range.start);
+    var position = available ? (range.start - begin) / available * maximum : 0;
+    if (!fromScrollbar && Math.abs(scroll.scrollLeft - position) > 0.5) { scroll.scrollLeft = position; }
+    lastScrollLeft=scroll.scrollLeft;
+    scroll.setAttribute('aria-valuenow', Math.round((range.start - begin) / 1000));
+    scroll.setAttribute('aria-valuetext', byId('rangeLabel').textContent);
+    scroll.setAttribute('aria-disabled', available ? 'false' : 'true');
+  }
+  function setRange(start, end, origin) {
+    var begin = core.parseMoment(draft.config.simulationDate) * 1000, finish = begin + 86400000;
+    var width = Math.max(300000, Math.min(86400000, end - start));
+    start = Math.max(begin, Math.min(finish - width, start)); end = start + width;
+    if(range&&range.start===start&&range.end===end) {return;}
+    range = {start: start, end: end}; rangeOrigin=origin||'controls';
+    if (!rangeFrame) { rangeFrame=requestAnimationFrame(function () {
+      rangeFrame=null; var source=rangeOrigin; syncingRange=true;
+      if (source!=='timeline') { timeline.setWindow(range.start,range.end,{animation:false}); }
+      updateLoadDetail(source);
+      syncingRange=false; updateRangeControls(source==='scrollbar'); drawCollisionBands(); drawTimeGuide(); scheduleRunPaint(); savePreferences();
+    }); }
+  }
+  function drawCollisionBands() {
+    if (!range) { return; }
+    ['chartCollisions','ganttCollisions'].forEach(function (id) {
+      var canvas=byId(id), width=canvas.clientWidth, height=canvas.clientHeight;
+      if (!width || !height) { return; }
+      var ratio=window.devicePixelRatio||1, pixelsWide=Math.round(width*ratio), pixelsHigh=Math.round(height*ratio);
+      if (canvas.width!==pixelsWide) { canvas.width=pixelsWide; }
+      if (canvas.height!==pixelsHigh) { canvas.height=pixelsHigh; }
+      var context=canvas.getContext('2d'); context.setTransform(ratio,0,0,ratio,0,0); context.clearRect(0,0,width,height);
+      context.fillStyle='rgba(215,45,55,0.16)';
+      var plotWidth=width-chartGrid.left-chartGrid.right, top=id==='chartCollisions' ? chartGrid.top : 0;
+      var bottom=id==='chartCollisions' ? chartGrid.bottom : 0;
+      core.visibleTimeRange(collisionWindows,range.start/1000,range.end/1000).forEach(function (interval) {
+        var start=Math.max(range.start,interval.start*1000), end=Math.min(range.end,interval.end*1000);
+        if (end<=start) { return; }
+        var x=chartGrid.left+(start-range.start)/(range.end-range.start)*plotWidth;
+        var bandWidth=Math.min(width-chartGrid.right-x,Math.max(1,(end-start)/(range.end-range.start)*plotWidth));
+        context.fillRect(x,top,bandWidth,height-top-bottom);
+      });
+    });
+  }
+  function scheduleRunPaint() {
+    if(!paintFrame) { paintFrame=requestAnimationFrame(function () {paintFrame=null;drawRuns();drawTimeGuide();}); }
+  }
+  function drawRuns() {
+    if(!forecast || !range) { return; }
+    var canvas=byId('ganttRuns'), width=canvas.clientWidth, height=canvas.clientHeight;
+    if(!width||!height) { return; }
+    var ratio=window.devicePixelRatio||1;
+    if(canvas.width!==Math.round(width*ratio)) {canvas.width=Math.round(width*ratio);}
+    if(canvas.height!==Math.round(height*ratio)) {canvas.height=Math.round(height*ratio);}
+    var context=canvas.getContext('2d');context.setTransform(ratio,0,0,ratio,0,0);context.clearRect(0,0,width,height);
+    var outer=canvas.getBoundingClientRect(), plotWidth=width-chartGrid.left-chartGrid.right;paintedRuns=[];paintedFacts=[];
+    var nextCache=Object.create(null),cacheRange=range.start+':'+range.end+':'+plotWidth;
+    function marksFor(rows,key) {
+      var previous=runPaintCache[key],entry=previous&&previous.rows===rows&&previous.range===cacheRange?previous:
+        {rows:rows,range:cacheRange,marks:core.visibleRunMarks(rows,range.start/1000,range.end/1000,plotWidth)};
+      nextCache[key]=entry;return entry.marks;
+    }
+    var center=byId('timeline').querySelector('.vis-panel.vis-center');if(!center) {return;}
+    var body=center.getBoundingClientRect(), plotTop=Math.max(0,body.top-outer.top), plotBottom=Math.min(height,body.bottom-outer.top);
+    context.save();context.beginPath();context.rect(chartGrid.left,plotTop,plotWidth,Math.max(0,plotBottom-plotTop));context.clip();
+    Object.keys(factRuns).forEach(function (group) {
+      var label=jobLabels[group];if(!visibleGroups[group]||!label) {return;}
+      var bounds=label.getBoundingClientRect(),top=Math.max(plotTop,bounds.top-outer.top),bottom=Math.min(plotBottom,bounds.bottom-outer.top);
+      if(!bounds.height||bottom<=top) {return;}
+      var marks=marksFor(factRuns[group],'fact:'+group);
+      context.fillStyle='#708090';context.globalAlpha=.17;
+      marks.forEach(function (mark) {
+        var x=chartGrid.left+mark.x,right=chartGrid.left+mark.right;
+        context.fillRect(x,top,Math.max(1,right-x),bottom-top);
+        paintedFacts.push({x:x,right:right,top:top,bottom:bottom,mark:mark,group:group});
+      });context.globalAlpha=1;
+    });
+    forecast.jobs.forEach(function (result) {
+      var label=jobLabels[result.jobId]; if(!visibleGroups[result.jobId]||!label) {return;}
+      var bounds=label.getBoundingClientRect(), y=bounds.top-outer.top+3;
+      if(!bounds.height||y+28<=plotTop||y>=plotBottom) {return;}
+      var marks=marksFor(result.intervals,'forecast:'+result.jobId);
+      var ink=subsystemColor(jobById(result.jobId).subsystem);context.fillStyle=ink;
+      marks.forEach(function (mark) {
+        var x=chartGrid.left+mark.x, w=Math.min(plotWidth-mark.x,mark.right-mark.x);
+        context.globalAlpha=mark.zero ? .35 : 1;
+        context.fillRect(x,y,w,mark.count>1?8:mark.zero?4:8);context.globalAlpha=1;
+        if(mark.count>1 && w>100) {context.font='11px Arial';context.fillStyle='#344f6e';
+          context.textAlign='right';context.fillText(mark.count+' запусков'+(mark.zero?' · 0 с':''),x+w-4,y+24);
+          context.textAlign='left';context.fillStyle=ink;}
+        paintedRuns.push({x:x,right:x+w,top:Math.max(plotTop,y-5),bottom:Math.min(plotBottom,y+28),mark:mark,jobId:result.jobId,reason:result.reason});
+      });
+    });
+    context.restore();runPaintCache=nextCache;
+  }
+  function runTooltip(event) {
+    var tooltip=byId('ganttTooltip');
+    if(!byId('dragMarker').hidden) {tooltip.hidden=true;return;}
+    var outer=byId('ganttRuns').getBoundingClientRect(), x=event.clientX-outer.left,y=event.clientY-outer.top;
+    var hit=paintedRuns.find(function (entry) {return x>=entry.x-2&&x<=entry.right+2&&y>=entry.top&&y<=entry.bottom;});
+    var fact=paintedFacts.find(function (entry) {return x>=chartGrid.left&&x>=entry.x-2&&x<=entry.right+2&&y>=entry.top&&y<entry.bottom;});
+    if(!hit&&!fact) {tooltip.hidden=true;return;}
+    var text='';
+    if(hit) {var mark=hit.mark, run=mark.run;
+    text=durationDescription(jobById(hit.jobId))+' — '+displayName(jobById(hit.jobId))+'\n'+(mark.count>1 ? mark.count+' запусков, с '+core.formatMoment(mark.first).slice(11,19)+' до '+core.formatMoment(mark.last).slice(11,19) :
+      'Прогноз: '+core.formatMoment(run.start).slice(11,19)+' — '+core.formatMoment(run.end).slice(11,19))+
+      (mark.zero?'\n0 с по истории: показана точка старта, вклад в параллельную работу — 0.':'')+
+      (run.forced?'\nБудет остановлено по правилу завершения':'')+(hit.reason?'\n'+hit.reason:'');}
+    var pointedTime=(range.start+(x-chartGrid.left)/(byId('ganttRuns').clientWidth-chartGrid.left-chartGrid.right)*(range.end-range.start))/1000;
+    tooltip.textContent=text+(fact?(text?'\n\n':'')+'Факт: '+factTooltip(factIntervalAt(fact.group,pointedTime),fact.group)+
+      (fact.mark.count>1?'\nВ этом участке объединено запусков: '+fact.mark.count+'. Приблизьте шкалу для подробностей.':''):'');
+    tooltip.style.left=Math.max(chartGrid.left,Math.min(x+12,byId('ganttRuns').clientWidth-350))+'px';
+    tooltip.style.top=Math.max(0,y-70)+'px';tooltip.hidden=false;
+  }
+  // Даже у объединенной полосы подсказка относится к времени под указателем.
+  function factIntervalAt(group,time) {
+    var rows=factRuns[group],low=0,high=rows.length;
+    while(low<high) {var middle=(low+high)>>>1;if(rows[middle].searchEnd<=time) {low=middle+1;}else {high=middle;}}
+    if(low<rows.length && rows[low].displayStart<=time) {return rows[low].interval;}
+    low=0;high=rows.length;
+    while(low<high) {var middle=(low+high)>>>1;if(rows[middle].displayStart<time) {low=middle+1;}else {high=middle;}}
+    var nearest=rows[Math.min(low,rows.length-1)];
+    if(low>0 && Math.abs(rows[low-1].displayStart-time)<Math.abs(nearest.displayStart-time)) {nearest=rows[low-1];}
+    return nearest.interval;
+  }
+  function shiftRange(direction) {
+    var step = (range.end - range.start) / 2; setRange(range.start + step * direction, range.end + step * direction);
+  }
+  function zoomRange(factor) {
+    var center = (range.start + range.end) / 2, width = Math.min(86400000, Math.max(300000, (range.end - range.start) * factor));
+    setRange(center - width / 2, center + width / 2);
+  }
+  function isVisible(job) {
+    if (job.isNew) { return true; }
+    if (byId('enabledOnly').checked && !job.enabled) { return false; }
+    var query = byId('filter').value.toLocaleLowerCase();
+    return !query || (job.name + ' ' + job.methodName + ' ' + job.subsystem).toLocaleLowerCase().indexOf(query) !== -1;
+  }
+  function groupName(job) {
+    if (byId('grouping').value === 'subsystem') { return job.subsystem; }
+    var duration = core.durationFor(job, draft.config);
+    return duration === null ? 'Длительность неизвестна' : duration <= 1 ? 'До 1 секунды' : duration <= 10 ? 'До 10 секунд' : duration <= 60 ? 'До 60 секунд' : 'Более 60 секунд';
+  }
+  function labelFor(job, changedIds) {
+    var label = textNode('span', ''); label.className = 'job-label' + (job.enabled ? '' : ' disabled') + (changedIds.indexOf(job.id) === -1 ? '' : ' changed');
+    var pin = document.createElement('input'); pin.type = 'checkbox'; pin.checked = !!job.pinned;
+    pin.title = 'Не менять это задание автоматически'; pin.disabled = !!control || !!pendingApply;
+    pin.addEventListener('change', function () { job.pinned = pin.checked; notify(); savePreferences(); });
+    var settings = textNode('button',(job.isNew ? 'Новое: ' : '') + displayName(job) + (job.enabled ? '' : ' (отключено)'));
+    settings.type = 'button'; settings.className = 'job-settings'; settings.title = 'Настроить время и частоту запуска';
+    settings.appendChild(textNode('small','Настроить расписание'));
+    var simulation=forecast.jobs.find(function (entry) {return entry.jobId===job.id;});
+    var extra=textNode('small',durationDescription(job)+(simulation&&simulation.reason?'\n'+simulation.reason:''));
+    extra.className='job-extra';extra.hidden=!expandedRows[job.id];
+    var more=textNode('button',extra.hidden?'Подробнее':'Свернуть');more.type='button';more.className='job-more';
+    more.setAttribute('aria-expanded',String(!extra.hidden));more.addEventListener('click',function (event) {
+      if(event) {event.stopPropagation();}extra.hidden=!extra.hidden;expandedRows[job.id]=!extra.hidden;
+      more.textContent=extra.hidden?'Подробнее':'Свернуть';more.setAttribute('aria-expanded',String(!extra.hidden));
+      requestAnimationFrame(function () {if(timeline) {timeline.redraw();}scheduleRunPaint();});
+    });
+    settings.addEventListener('click',function () {openScheduleEditor(job.id);});
+    label.appendChild(pin); label.appendChild(settings);label.appendChild(more);label.appendChild(extra);
+    jobLabels[job.id]=label; return label;
+  }
+  function durationDescription(job) {
+    var duration=core.durationFor(job,draft.config);
+    if(duration===null) {return 'Длительность неизвестна';}
+    if(draft.config.durationMode==='Fixed') {return 'Вручную: '+duration+' с';}
+    if(core.usesFallbackDuration(job,draft.config)) {return 'Без истории · '+duration+' с';}
+    var samples=job.sampleCount>0?' · '+job.sampleCount+' '+(draft.config.historySampling?
+      word(job.sampleCount,'замер','замера','замеров'):word(job.sampleCount,'запуск','запуска','запусков')):'';
+    return (duration===0?'0 с по истории':(draft.config.durationMode==='P95'?'С запасом: ':'По истории: ')+duration+' с')+samples;
+  }
+  function editorField(container, caption, input) {
+    var hints={'Время начала':'Часы:минуты:секунды. Двоеточия добавляются при вводе: 1132 → 11:32:00, 081234 → 08:12:34. Дни и окончание окна — в подробном расписании.',
+      'Как запускать':'Один раз — один запуск в активный день для этого окна. Через интервал — отсчет от предыдущего начала. После завершения — отсчет паузы от конца работы. Интервал и пауза — запуск после выполнения обоих условий.',
+      'Повторять каждые':'Время между началами запусков. Если работа длится дольше интервала, следующий экземпляр ждет ее завершения.',
+      'Пауза после работы':'Сколько ждать после завершения предыдущего запуска. Например: 20 секунд работы + 60 секунд паузы = новый старт через 80 секунд.'};
+    input.title=hints[caption]||caption;
+    input.setAttribute('aria-label',caption);
+    var field = document.createElement('div');field.className='editor-field';
+    field.appendChild(textNode('span',caption));field.appendChild(input);container.appendChild(field);return field;
+  }
+  function editorChoice(values) {
+    var choice=document.createElement('div'); choice.className='editor-choice'; choice.setAttribute('role','group');
+    choice.choose=function (value) {
+      choice.value=value;
+      values.forEach(function (entry,index) { choice.children[index].className=entry[0]===value ? 'selected' : ''; });
+    };
+    values.forEach(function (entry) {
+      var button=textNode('button',entry[1]); button.type='button';
+      button.addEventListener('click',function () { choice.choose(entry[0]); if (choice.onChoiceChange) { choice.onChoiceChange(); } });
+      choice.appendChild(button);
+    });
+    choice.choose(values[0][0]); return choice;
+  }
+  function frequencyField(container, caption, seconds) {
+    var amount = document.createElement('input'); amount.type='text'; amount.inputMode='numeric';
+    var unit=editorChoice([['1','секунд'],['60','минут'],['3600','часов']]);
+    var scale=seconds && seconds%3600===0 ? 3600 : seconds && seconds%60===0 ? 60 : 1;
+    amount.value=seconds ? seconds/scale : 1; unit.choose(String(scale));
+    var label=editorField(container,caption,amount); label.appendChild(unit);
+    return {amount:amount,unit:unit,label:label};
+  }
+  function openScheduleEditor(id,preserveOriginal) {
+    if (control || pendingApply) { return; }
+    if (!editorDocument && draft.config.nativeJobEditor && !draft.config.offlineReport) {bridge('editSchedule',{jobId:id});return;}
+    editorJobId=id; var job=jobById(id); if(!job) {throw new Error('Задание не найдено.');}
+    editorWorking=copy(job);editorWindowIndex=0;
+    if(!preserveOriginal) {editorOriginal=copy(job);editorPublished=false;}
+    byId('editorTitle').textContent=displayName(job); byId('editorError').textContent='';
+    byId('editorEnabled').checked=job.enabled;
+    if(!editorRows.length) {
+      var section=document.createElement('fieldset'),legend=textNode('legend','');section.appendChild(legend);
+      var start=document.createElement('input'); start.type='text';start.placeholder='чч:мм:сс'; start.maxLength=8;
+      start.inputMode='numeric';start.autocomplete='off';
+      start.addEventListener('input',function () {maskEditorTime(start);byId('editorError').textContent='';});
+      start.addEventListener('keydown',function (event) {editTimeKey(start,event);});
+      start.addEventListener('blur',function () {
+        try {start.value=editorTimeValue(start.value);byId('editorError').textContent='';}
+        catch(error) {byId('editorError').textContent=error.message;}
+      });
+      editorField(section,'Время начала',start);
+      var mode=editorChoice([['once','Один раз'],['period','Через интервал'],['pause','После завершения'],['both','Интервал и пауза']]);
+      editorField(section,'Как запускать',mode);
+      var period=frequencyField(section,'Повторять каждые',0), pause=frequencyField(section,'Пауза после работы',0);
+      var help=textNode('p','');help.className='editor-help';section.appendChild(help);
+      var navigation=document.createElement('div'),previous=textNode('button','◀'),next=textNode('button','▶');
+      navigation.className='editor-window-nav';previous.type='button';next.type='button';
+      previous.title='Предыдущее дневное окно';next.title='Следующее дневное окно';
+      previous.addEventListener('click',function () {changeEditorWindow(-1);});next.addEventListener('click',function () {changeEditorWindow(1);});
+      navigation.appendChild(previous);navigation.appendChild(next);section.appendChild(navigation);
+      editorRows.push({start:start,mode:mode,period:period,pause:pause,legend:legend,help:help,previous:previous,next:next});
+      mode.onChoiceChange=updateEditorMode;byId('editorWindows').appendChild(section);
+    }
+    loadEditorWindow();
+    byId('detailedSchedule').disabled=!!draft.config.offlineReport;
+    setEditorOpen(true);
+  }
+  function loadEditorWindow() {
+    var windows=core.windows(editorWorking.schedule),window=windows[editorWindowIndex],row=editorRows[0];
+    row.windowId=window.windowId;row.start.value=window.startTime;
+    row.legend.textContent='Окно '+(editorWindowIndex+1)+' из '+windows.length+': до '+(window.endTimeSet?window.endTime:'конца дня');
+    row.mode.choose(window.repeatPeriod===0?'once':window.repeatPause>0?window.repeatPeriod===1?'pause':'both':'period');
+    [row.period,row.pause].forEach(function (field,index) {var seconds=index?window.repeatPause:window.repeatPeriod;
+      var scale=seconds&&seconds%3600===0?3600:seconds&&seconds%60===0?60:1;
+      field.amount.value=seconds?seconds/scale:1;field.unit.choose(String(scale));});
+    row.previous.disabled=editorWindowIndex===0;row.next.disabled=editorWindowIndex===windows.length-1;updateEditorMode();
+  }
+  function updateEditorMode() {
+    var row=editorRows[0],mode=row.mode.value;
+    [row.period,row.pause].forEach(function (field,index) {
+      var enabled=index?mode==='pause'||mode==='both':mode==='period'||mode==='both';field.amount.disabled=!enabled;
+      Array.prototype.forEach.call(field.unit.children,function (button) {button.disabled=!enabled;});
+      field.label.style.opacity=enabled?'1':'.45';
+    });
+    row.help.textContent={once:'Один запуск в активный день для выбранного окна.',
+      period:'Интервал считается от начала предыдущего запуска. Если работа длится дольше, следующий старт подождёт её завершения.',
+      pause:'Пауза считается после окончания работы. Например: 20 секунд работы + 60 секунд паузы = новый старт через 80 секунд.',
+      both:'Новый старт после истечения интервала от начала и паузы от окончания предыдущей работы.'}[mode];
+  }
+  function storeEditorWindow() {
+    var row=editorRows[0],window=windowById(editorWorking,row.windowId),seconds=core.timeSeconds(editorTimeValue(row.start.value));
+    if(!core.editableStart(window,seconds)) {throw new Error('Начало должно находиться внутри выбранного окна.');}
+    window.startTime=core.formatTime(seconds);window.startTimeSet=true;
+    var oldPause=window.repeatPause,oldPeriod=window.repeatPeriod;
+    window.repeatPeriod=row.mode.value==='once'?0:row.mode.value==='pause'?1:readFrequency(row.period);
+    window.repeatPause=row.mode.value==='pause'||row.mode.value==='both'?readFrequency(row.pause):row.mode.value==='once'&&oldPeriod===0?oldPause:0;
+  }
+  function changeEditorWindow(direction) {
+    try {storeEditorWindow();editorWindowIndex+=direction;loadEditorWindow();byId('editorError').textContent='';}
+    catch(error) {byId('editorError').textContent=error.message;}
+  }
+  function closeScheduleEditor() {
+    if(document.activeElement&&document.activeElement.blur) {document.activeElement.blur();}
+    if(byId('filter').focus) {byId('filter').focus();}byId('scheduleEditor').hidden=true;
+  }
+  function setEditorOpen(open) {
+    byId('scheduleEditor').hidden=!open;
+  }
+  function isEditorOpen() {
+    return !byId('scheduleEditor').hidden;
+  }
+  function cancelScheduleEditor() {
+    if(editorDocument) {sendEditorResult('editorCancel');return;}
+    if(editorPublished) {publishEditedJob(copy(editorOriginal));}closeScheduleEditor();
+  }
+  function sendEditorResult(event) {
+    var message={event:event};
+    if(event!=='editorCancel') {
+      storeEditorWindow();message.enabled=byId('editorEnabled').checked;
+      message.windowChanges=core.windows(editorWorking.schedule).map(function (window) {return {windowId:window.windowId,
+        newStartTime:window.startTime,newRepeatPeriod:window.repeatPeriod,newRepeatPause:window.repeatPause};});
+      if (editorWorking.creationTypes) {
+        message.creation={metadataName:byId('creationType').value,name:byId('creationName').value.trim(),
+          key:byId('creationKey').value,parameterSourceId:byId('creationSource').value};
+        if (!message.creation.name) {throw new Error('Введите название нового задания.');}
+      }
+    }
+    var button=byId('v8bridge');button.setAttribute('data-payload',JSON.stringify(message));button.click();
+  }
+  function prepareCreationEditor(job) {
+    var container=byId('creationFields');
+    container.hidden=!job.creationTypes;
+    if (!job.creationTypes) {return;}
+    if (!container.firstChild) {
+      var type=document.createElement('select');type.id='creationType';
+      var name=document.createElement('input');name.id='creationName';name.type='text';name.maxLength=1000;
+      var key=document.createElement('input');key.id='creationKey';key.type='text';key.maxLength=1000;
+      var source=document.createElement('select');source.id='creationSource';
+      editorField(container,'Тип задания',type);editorField(container,'Название',name);
+      editorField(container,'Ключ',key);editorField(container,'Параметры выполнения',source);
+      key.title='Ключ отличает экземпляры одного типа. Если он используется методом задания, согласуйте значение с администратором.';
+      source.title='Без параметров или копия параметров сохраненного задания этого же типа. Значения копируются на сервере.';
+      container.appendChild(textNode('p','Тип определяет выполняемый метод. Для метода с параметрами выберите существующее задание с подходящими параметрами. Новое задание сначала добавится только в прогноз.'));
+      type.addEventListener('change',function () {fillCreationType(jobById(editorJobId));});
+    }
+    byId('editorTitle').textContent='Новое регламентное задание';
+    byId('saveEditor').textContent='Добавить в прогноз';
+    clearNode(byId('creationType'));
+    job.creationTypes.forEach(function (type) {
+      var option=textNode('option',type.name);option.value=type.id;byId('creationType').appendChild(option);
+    });
+    byId('creationType').value=job.creation?job.creation.metadataName:job.creationTypes[0].id;
+    fillCreationType(job);
+    if(job.creation) {
+      byId('creationName').value=job.creation.name;byId('creationKey').value=job.creation.key;
+      byId('creationSource').value=job.creation.parameterSourceId;
+    }
+  }
+  function fillCreationType(job) {
+    var type=job.creationTypes.find(function (item) {return item.id===byId('creationType').value;});
+    if (!type) {throw new Error('Выберите тип задания.');}
+    byId('creationName').value=type.name;byId('creationKey').value=type.key;
+    var source=byId('creationSource');clearNode(source);
+    var empty=textNode('option','Без параметров');empty.value='';source.appendChild(empty);
+    type.parameterSources.forEach(function (item) {
+      var option=textNode('option','Скопировать из: '+item.name);option.value=item.id;source.appendChild(option);
+    });
+  }
+  function readFrequency(field) {
+    var seconds=Number(field.amount.value)*Number(field.unit.value);
+    if (!Number.isSafeInteger(seconds)||seconds<=0) { throw new Error('Укажите положительный целый интервал.'); }
+    return seconds;
+  }
+  function editorTimeValue(value) {
+    var text=String(value).trim(),parts;
+    if(/^\d{2}(\d{2}){0,2}$/.test(text)) {parts=text.match(/\d{2}/g);}
+    else if(/^\d{1,2}:\d{2}(:\d{2})?$/.test(text)) {parts=text.split(':');}
+    else {throw new Error('Время начала: введите часы и минуты, например 11:32, или 6 цифр — 113200.');}
+    while(parts.length<3) {parts.push('00');}
+    var formatted=parts.map(function (part) {return ('0'+part).slice(-2);}).join(':');
+    try {core.timeSeconds(formatted);}catch(error) {throw new Error('Время начала должно быть от 00:00:00 до 23:59:59.');}
+    return formatted;
+  }
+  function maskEditorTime(input) {
+    var text=input.value,caret=typeof input.selectionStart==='number'?input.selectionStart:text.length;
+    if(/^\d:\d{2}(:\d{2})?$/.test(text)) {text='0'+text;caret+=1;}
+    var before=(text.slice(0,caret).match(/\d/g)||[]).length,digits=text.replace(/\D/g,'').slice(0,6);
+    input.value=digits.replace(/^(\d{2})(\d)/,'$1:$2').replace(/^(\d{2}:\d{2})(\d)/,'$1:$2');
+    if(input.setSelectionRange) {
+      var position=0,count=0;while(position<input.value.length&&count<before) {if(/\d/.test(input.value.charAt(position))) {count+=1;}position+=1;}
+      input.setSelectionRange(position,position);
+    }
+  }
+  function editTimeKey(input,event) {
+    if(event.ctrlKey||event.altKey||event.metaKey||!input.setSelectionRange) {return;}
+    var code=event.keyCode,key=event.key||({8:'Backspace',46:'Delete'}[code])||String.fromCharCode(code>=96&&code<=105?code-48:code),
+      start=input.selectionStart,end=input.selectionEnd;
+    if(start!==end) {return;}
+    if(key==='Backspace'&&input.value.charAt(start-1)===':') {input.setSelectionRange(start-1,start-1);}
+    else if(key==='Delete'&&input.value.charAt(start)===':') {input.setSelectionRange(start+1,start+1);}
+    else if(/^\d$/.test(key)&&/^\d{2}:\d{2}:\d{2}$/.test(input.value)) {
+      if(input.value.charAt(start)===':') {start+=1;}
+      event.preventDefault();if(start>=input.value.length) {return;}
+      input.value=input.value.slice(0,start)+key+input.value.slice(start+1);
+      start+=1;if(input.value.charAt(start)===':') {start+=1;}input.setSelectionRange(start,start);
+      byId('editorError').textContent='';
+    }
+  }
+  function publishEditedJob(job) {
+    var index=draft.jobs.findIndex(function (entry) { return entry.id===job.id; });
+    var result=core.simulateJob(job,draft.config); draft.jobs[index]=job; forecast.jobs[index]=result;
+    forecast.intervals=forecast.intervals.filter(function (entry) { return entry.jobId!==job.id; }).concat(result.intervals);
+    var begin=core.parseMoment(draft.config.simulationDate);
+    forecast.load=core.analyzeConcurrency(forecast.intervals,begin,begin+86400,draft.config.maxThreadsThreshold,draft.config.resolutionSeconds);
+    updatePreviewItems(result); groups.update({id:job.id,content:labelFor(job,changes().map(function (entry) { return entry.id; }))});
+    applyFilter(); updateSummary(); notify();
+  }
+  function saveScheduleEditor(closeAfterSave) {
+    try {
+      if(editorDocument) {sendEditorResult(closeAfterSave===false?'editorDetailed':'editorAccept');return true;}
+      storeEditorWindow();var job=copy(editorWorking);
+      job.enabled=byId('editorEnabled').checked;
+      publishEditedJob(job);editorPublished=true;if(closeAfterSave!==false) {closeScheduleEditor();}return true;
+    } catch(error) { byId('editorError').textContent=error.message; return false; }
+  }
+  function forecastItems(result) {
+    var job = jobById(result.jobId), handles = Object.create(null), output = [];
+    var begin = core.parseMoment(draft.config.simulationDate);
+    result.intervals.forEach(function (interval) {
+      var window = windowById(job, interval.windowId), point = interval.displayStart === interval.displayEnd;
+      var handleAllowed = !handles[interval.windowId] && interval.start >= begin && core.editableStart(window, interval.start - begin);
+      if (handleAllowed) { handles[interval.windowId] = true; }
+      if (handleAllowed) {
+        output.push({id: 'handle:' + job.id + ':' + interval.windowId, group: job.id, jobId: job.id,
+          windowId: interval.windowId, forecast: true, first: true, start: interval.start * 1000, type: 'box', align:'left',
+          content: dragHandleContent('handle:' + job.id + ':' + interval.windowId,interval.start,point),
+          title: escapeHTML(displayName(job) + '\n'+durationDescription(job)+'\nПотяните эту метку влево или вправо, чтобы изменить начало запуска.'+(point?'\n0 с по истории: точка старта не увеличивает число одновременно работающих заданий.':'')+(result.reason?'\n'+result.reason:'')).replace(/\n/g, '<br>'),
+          className: 'start-handle', editable: {updateTime: true, updateGroup: false, remove: false}});
+      }
+    });
+    return output;
+  }
+  function dragHandleContent(id,start,zero) {
+    var content=textNode('span','Начало в '+core.formatMoment(start).slice(11,19)+(zero?' · 0 с':''));
+    content.setAttribute('data-scheduler-handle',id);
+    return content;
+  }
+  function beginHandleDrag(event,id) {
+    if (event.button!==0 || control || pendingApply) { return; }
+    var original=items.get(id), center=byId('timeline').querySelector('.vis-panel.vis-center');
+    if (!original || !center) { return; }
+    event.preventDefault(); event.stopPropagation();
+    var firstX=event.clientX, bounds=center.getBoundingClientRect(), width=bounds.right-bounds.left;
+    var initialRange=range.end-range.start, latest=Object.assign({},original), moved=false;
+    function move(pointer) {
+      pointer.preventDefault();
+      if (Math.abs(pointer.clientX-firstX)<3 && !moved) { return; }
+      moved=true;
+      var start=Math.round((Number(original.start)+(pointer.clientX-firstX)/width*initialRange)/1000)*1000;
+      var candidate=Object.assign({},original,{start:start});
+      previewMove(candidate,function (accepted) { if (accepted) { latest=candidate; } });
+    }
+    function release() {
+      window.removeEventListener('mousemove',move); window.removeEventListener('mouseup',finish);
+      window.removeEventListener('blur',cancel);
+    }
+    function finish(pointer) {
+      release(); if (moved) { move(pointer); finishMove(latest,function () {}); }
+    }
+    function cancel() {
+      release(); byId('dragMarker').hidden=true;
+    }
+    window.addEventListener('mousemove',move); window.addEventListener('mouseup',finish); window.addEventListener('blur',cancel);
+  }
+  function factItem(interval) {
+    if (!interval.start) { return null; }
+    var factBegin = core.parseMoment(draft.config.factDate), factEnd = factBegin + 86400;
+    var start = core.parseMoment(interval.start), end = interval.end ? core.parseMoment(interval.end) : core.parseMoment(draft.config.collectedAt);
+    if (start >= factEnd || end < factBegin) { return null; }
+    var begin = core.parseMoment(draft.config.simulationDate), visibleStart = Math.max(start, factBegin), visibleEnd = Math.min(end, factEnd);
+    return {start:start,end:end,displayStart:begin+visibleStart-factBegin,displayEnd:begin+visibleEnd-factBegin,fact:true,interval:interval};
+  }
+  function factTooltip(interval,group) {
+    var relatedJob = jobById(group);
+    var states = {completed:'успешно завершено',failed:'завершено с ошибкой',active:'еще выполняется',canceled:'отменено',incomplete:'сведений недостаточно'};
+    var title = (interval.name || (relatedJob ? displayName(relatedJob) : 'Несопоставленный запуск')) +
+      '\nВыполнение: ' + humanMoment(interval.start) + ' - ' + humanMoment(interval.end) + '\nСостояние: ' + states[interval.state];
+    return title;
+  }
+  function prepareFacts() {
+    var mapping=[draft.config.simulationDate,draft.config.factDate,draft.config.collectedAt].join('|');
+    if(factSource===draft.unmappedIntervals && factSource!==null && factMappingKey===mapping) {return;}
+    factSource=draft.unmappedIntervals;factMappingKey=mapping;factRuns=Object.create(null);
+    function add(group,intervals) {
+      var rows=[];intervals.forEach(function (interval) {var item=factItem(interval);if(item) {rows.push(item);}});
+      rows.sort(function (a,b) {return a.displayStart-b.displayStart;});
+      var maximum=-Infinity;rows.forEach(function (row) {maximum=Math.max(maximum,row.displayEnd);row.searchEnd=maximum;});
+      if(rows.length) {factRuns[group]=rows;}
+    }
+    draft.jobs.forEach(function (job) {add(job.id,job.factIntervals);});
+    add('unmapped',draft.unmappedIntervals||[]);
+  }
+  function redrawLoad(load) {
+    collisionWindows=core.collisionRanges(load,draft.config.maxThreadsThreshold);
+    var begin = core.parseMoment(draft.config.simulationDate), finish = begin + 86400;
+    var visible = range || {start: begin * 1000, end: (begin + 21600) * 1000};
+    var data = load.samples.map(function (sample) { return [sample.start * 1000, sample.load, sample.end*1000, false]; });
+    data.push([finish * 1000, 0]);
+    chart.setOption({animation: false, useUTC: true, grid: chartGrid,
+      tooltip: {trigger: 'axis', formatter: function (entries) { var value=entries[0].value;
+        return (value[3]?'Одновременно: ':'Максимум за интервал: ')+value[1]+'<br>'+core.formatMoment(value[0]/1000).slice(11,19)+
+          (value[2]?' — '+core.formatMoment(value[2]/1000).slice(11,19):''); }},
+      dataZoom: [{type:'inside',xAxisIndex:0,filterMode:'none',startValue:visible.start,endValue:visible.end,
+        zoomOnMouseWheel:'ctrl',moveOnMouseWheel:false,moveOnMouseMove:true,throttle:16,minValueSpan:300000,maxValueSpan:86400000}],
+      xAxis: {type: 'time', min: begin * 1000, max: finish * 1000,
+        axisLabel: {formatter: function (value) { return core.formatMoment(value / 1000).slice(11, 16); }}},
+      yAxis: {type: 'value', min: 0, max: Math.max(load.peak + 1, draft.config.maxThreadsThreshold + 1), minInterval: 1}, series: [{type: 'line', name: 'Прогноз', step: 'end', symbol: 'none',
+        lineStyle: {width: 1, color: '#496eaa'}, areaStyle: {color: '#8da9d5'}, data: data,
+        markLine: {silent: true, symbol: 'none', lineStyle: {color: '#d24242'}, data: [{yAxis: draft.config.maxThreadsThreshold, name: 'Лимит'}]}}]});
+    byId('peak').textContent = load.peak + ' ' + word(load.peak, 'задание', 'задания', 'заданий');
+    byId('objective').textContent = load.objective;
+    byId('overload').textContent = durationText(load.overloadSeconds);
+    loadDetailKey=''; updateLoadDetail(); updateRangeControls(); drawCollisionBands(); scheduleRunPaint();
+  }
+  function updateLoadDetail(rangeSource) {
+    if(!chart||!forecast||!range) {return;}
+    var exact=range.end-range.start<=3600000, key=exact?range.start+':'+range.end:'overview';
+    if(key===loadDetailKey) {
+      if(rangeSource&&rangeSource!=='chart') {chart.dispatchAction({type:'dataZoom',startValue:range.start,endValue:range.end});}
+      return;
+    } loadDetailKey=key;
+    var source=exact?core.visibleTimeRange(forecast.load.segments,range.start/1000,range.end/1000):forecast.load.samples;
+    var begin=core.parseMoment(draft.config.simulationDate)*1000;
+    var data=source.map(function (segment) {return [segment.start*1000,segment.load,segment.end*1000,exact];});
+    data.push([exact?range.end:begin+86400000,0,null,exact]);
+    var options={series:[{data:data}]};
+    // Данные и границы меняются одним обновлением, без двойной перерисовки при прокрутке.
+    if(rangeSource&&rangeSource!=='chart') {options.dataZoom=[{startValue:range.start,endValue:range.end}];}
+    chart.setOption(options);
+  }
+  function detailsTable() {
+    var table = document.createElement('table'), header = document.createElement('tr');
+    ['Задание', draft.config.historySampling?'Замеров в выборке':'Запусков в истории', 'Обычно / с запасом, секунд', 'Прогноз'].forEach(function (title) { header.appendChild(textNode('th', title)); });
+    table.appendChild(header);
+    draft.jobs.forEach(function (job, index) {
+      if (!isVisible(job)) { return; }
+      var row = document.createElement('tr');
+      [displayName(job) + (byId('technicalNames').checked ? '\n' + job.methodName + '\n' + job.subsystems.join(', ') : ''), job.sampleCount,
+        (job.durationMed === null ? '?' : job.durationMed) + ' / ' + (job.durationP95 === null ? '?' : job.durationP95),
+        (forecast.jobs[index].reason || 'Расчет готов') + '\n' + job.historyQuality].forEach(function (value) {
+        var cell = textNode('td', value); cell.style.whiteSpace = 'pre-line'; row.appendChild(cell);
+      });
+      table.appendChild(row);
+    });
+    clearNode(byId('jobDetails')); byId('jobDetails').appendChild(table);
+  }
+  function buildGroups() {
+    jobLabels=Object.create(null);
+    var changedIds = changes().map(function (change) { return change.id; });
+    var rows = [], lastParent = null, grouped = byId('grouping').value !== 'none';
+    var ordered = draft.jobs.slice().sort(function (left, right) {
+      var a = (grouped ? groupName(left) : '') + displayName(left), b = (grouped ? groupName(right) : '') + displayName(right);
+      return a < b ? -1 : a > b ? 1 : 0;
+    });
+    ordered.forEach(function (job) {
+      var parent = grouped ? 'section:' + groupName(job) : null;
+      if (parent && parent !== lastParent) {
+        rows.push({id:parent,content:textNode('strong',groupName(job)),section:true,order:rows.length}); lastParent = parent;
+      }
+      rows.push({id:job.id,content:labelFor(job,changedIds),parentKey:parent,order:rows.length});
+    });
+    jobLabels.unmapped=textNode('span','Фоновые запуски без расписания');
+    rows.push({id:'unmapped',content:jobLabels.unmapped,order:rows.length});
+    groups.clear(); groups.add(rows);
+  }
+  function applyFilter() {
+    visibleGroups = Object.create(null);
+    draft.jobs.forEach(function (job) {
+      if (!isVisible(job)) { return; }
+      visibleGroups[job.id] = true;
+      if (byId('grouping').value !== 'none') { visibleGroups['section:' + groupName(job)] = true; }
+    });
+    if (factRuns.unmapped && factRuns.unmapped.length) { visibleGroups.unmapped = true; }
+    groupView.refresh();
+    scheduleRunPaint();
+    if (!byId('detailsPanel').hidden) { detailsTable(); }
+  }
+  function render(recalculate) {
+    if (recalculate === false) { applyFilter(); return; }
+    forecast = core.simulatePacket(draft);
+    prepareFacts();
+    var itemRows = [];
+    draft.jobs.forEach(function (job, index) {
+      forecastItems(forecast.jobs[index]).forEach(function (item) { itemRows.push(item); });
+    });
+    items.clear(); items.add(itemRows); buildGroups(); applyFilter();
+    updateSummary();
+  }
+  function updateSummary() {
+    var changedCount = changes().length, unlinked = draft.unmappedIntervals || [];
+    redrawLoad(forecast.load); byId('changed').textContent = changedCount;
+    var unavailable = forecast.jobs.filter(function (job) { return job.status !== 'ready' && job.status !== 'disabled' && job.status !== 'estimated'; }).length;
+    byId('dayTitle').textContent = 'Прогноз на ' + draft.config.simulationDate.split('-').reverse().join('.');
+    var zeroCount=draft.jobs.filter(function (job) {return job.enabled&&core.durationFor(job,draft.config)===0;}).length;
+    var fallbackCount=draft.jobs.filter(function (job) {return job.enabled&&core.usesFallbackDuration(job,draft.config);}).length;
+    var estimatedCount=forecast.jobs.filter(function (job) {return job.status==='estimated';}).length;
+    byId('quality').textContent = 'История может быть неполной. Прогноз приблизительный.'+
+      (draft.config.historySampling?' Длительность по выборке до трех запусков.':'')+
+      (draft.sourceQuality&&draft.sourceQuality.limitedSearches?' Достигнуто ограничение поиска ЖР: '+draft.sourceQuality.limitedSearches+'; часть образцов не получена.':'')+
+      (fallbackCount?' Без истории: '+fallbackCount+'; длительность из настроек — '+draft.config.fixedDurationSeconds+' с.':'')+
+      (estimatedCount?' Условный прогноз: '+estimatedCount+'; эти задания не распределяются автоматически.':'')+
+      (zeroCount?' Длительность 0 с по истории: '+zeroCount+' '+word(zeroCount,'задание','задания','заданий')+'. Показаны точки старта; нагрузка от них не добавлена.':'');
+    byId('sourceDetails').textContent = 'Данные получены: ' + humanMoment(draft.config.collectedAt) +
+      '. Без прогноза из-за недостатка данных: ' + unavailable + (draft.config.historySampling?
+        '. Обычная длительность — среднее, с запасом — максимум до трех замеров. Полный факт и несопоставленные работы не выгружаются.':
+        '. Фоновых записей без связи с расписанием: ' + unlinked.length + '.')+
+      (draft.sourceQuality&&draft.sourceQuality.message?' '+draft.sourceQuality.message:'')+
+      (draft.sourceQuality&&draft.sourceQuality.typesWithoutMarkers?' Типов без меток ЖР: '+draft.sourceQuality.typesWithoutMarkers+'.':'')+
+      (draft.sourceQuality&&draft.sourceQuality.ambiguousTypes?' Неоднозначных типов: '+draft.sourceQuality.ambiguousTypes+'.':'');
+    byId('status').textContent = changedCount ? 'Есть несохраненные изменения' : 'Готово';
+    var overloaded = forecast.load.peak > draft.config.maxThreadsThreshold;
+    byId('outlook').className = overloaded ? 'warning' : '';
+    byId('outlook').textContent = changedCount ? 'Подготовлены изменения. Нажмите «3. Сохранить расписания», чтобы применить их в базе.' :
+      overloaded ? 'Одновременно могут работать ' + forecast.load.peak + ' ' + word(forecast.load.peak,'задание','задания','заданий') +
+      ', выбранный лимит - ' + draft.config.maxThreadsThreshold + '. Нажмите «2. Распределить запуски».' :
+      'Прогноз укладывается в выбранный лимит: не более ' + draft.config.maxThreadsThreshold + ' заданий одновременно.';
+    byId('offlineActions').hidden = !draft.config.offlineReport;
+    updateButtons();
+  }
+  function updateButtons() {
+    var busy = !!control || !!pendingApply;
+    byId('optimize').disabled = busy || !draft; byId('rollback').disabled = busy || !draft;
+    byId('apply').disabled = !!control || draft.config.offlineReport || !pendingApply && !changes().length;
+    byId('apply').textContent = pendingApply ? 'Сверить применение' : 'Применить в ИБ';
+    byId('cancel').disabled = !control; byId('export').disabled = !!control || !draft;
+  }
+  function targetForMove(item) {
+    var original = items.get(item.id);
+    if (!original || !original.forecast || !original.first || item.group !== original.group || control || pendingApply) { return null; }
+    var job = jobById(original.jobId), window = windowById(job, original.windowId);
+    var begin = core.parseMoment(draft.config.simulationDate);
+    var seconds = Math.round(Number(item.start) / 1000 - begin);
+    if (!core.editableStart(window, seconds)) { return null; }
+    return {job:job,windowId:original.windowId,seconds:seconds};
+  }
+  function movedCandidate(item) {
+    var target = targetForMove(item);
+    if (!target) { return null; }
+    var candidate = {job:Object.assign({},target.job,{schedule:copy(target.job.schedule)}),windowId:target.windowId};
+    var begin = core.parseMoment(draft.config.simulationDate), window = windowById(candidate.job,candidate.windowId);
+    window.startTime=core.formatTime(target.seconds); window.startTimeSet=true;
+    var result = core.simulateJob(candidate.job, draft.config);
+    var first = result.intervals.find(function (entry) {
+      return entry.windowId === candidate.windowId && entry.start >= begin && core.editableStart(window, entry.start - begin);
+    });
+    if (!first) {
+      byId('status').textContent = 'В выбранном окне нет запусков по правилам расписания.';
+      return null;
+    }
+    return {job: candidate.job, result: result, firstStart:first.start};
+  }
+  function previewMove(item, callback) {
+    if (!targetForMove(item)) { callback(null); return; }
+    var time = core.formatMoment(Number(item.start) / 1000).slice(11,19);
+    item.content = 'Начало в ' + time;
+    var center = byId('timeline').querySelector('.vis-panel.vis-center');
+    if (center) {
+      var bounds = center.getBoundingClientRect(), shell = byId('timeline').getBoundingClientRect();
+      var fraction = (Number(item.start) - range.start) / (range.end - range.start);
+      byId('dragMarker').style.left = bounds.left - shell.left + fraction * (bounds.right-bounds.left) + 'px';
+      byId('dragTime').textContent = time;
+      byId('dragTime').style.transform = fraction > 0.85 ? 'translateX(-110%)' : '';
+      byId('dragMarker').hidden = false;
+    }
+    // До отпускания мыши меняется только указатель времени, модель остается прежней.
+    callback(item);
+  }
+  function updatePreviewItems(result, draggedId) {
+    var replacements = forecastItems(result).filter(function (entry) { return entry.id !== draggedId; });
+    var wanted = Object.create(null); replacements.forEach(function (entry) { wanted[entry.id] = true; });
+    var previous = items.get({filter: function (entry) {
+      return entry.forecast && entry.jobId === result.jobId && entry.id !== draggedId;
+    }});
+    items.remove(previous.filter(function (entry) { return !wanted[entry.id]; }).map(function (entry) { return entry.id; }));
+    items.update(replacements);
+  }
+  function finishMove(item, callback) {
+    byId('dragMarker').hidden = true;
+    var candidate = movedCandidate(item); callback(null);
+    if (!candidate) {
+      var original = items.get(item.id);
+      if (original) { updatePreviewItems(forecast.jobs.find(function (job) { return job.jobId === original.jobId; })); }
+      redrawLoad(forecast.load); return;
+    }
+    var index = draft.jobs.findIndex(function (job) { return job.id === candidate.job.id; });
+    draft.jobs[index] = candidate.job; forecast.jobs[index] = candidate.result;
+    forecast.intervals = forecast.intervals.filter(function (interval) { return interval.jobId !== candidate.job.id; }).concat(candidate.result.intervals);
+    var begin = core.parseMoment(draft.config.simulationDate);
+    forecast.load = core.analyzeConcurrency(forecast.intervals, begin, begin + 86400,
+      draft.config.maxThreadsThreshold, draft.config.resolutionSeconds);
+    updatePreviewItems(candidate.result);
+    groups.update({id:candidate.job.id,content:labelFor(candidate.job,changes().map(function (change) { return change.id; }))});
+    updateSummary();
+    if (Math.abs(candidate.firstStart-Number(item.start)/1000)>1) {
+      byId('status').textContent = 'Начало окна: ' + core.formatMoment(Number(item.start)/1000).slice(11,19) +
+        '. Ближайший запуск по правилам расписания: ' + core.formatMoment(candidate.firstStart).slice(11,19) + '.';
+    }
+    notify();
+  }
+  function renderProposals() {
+    var container = byId('pauseProposals'); clearNode(container); byId('pauseSection').hidden = !proposals.length;
+    proposals.forEach(function (proposal) {
+      var row = document.createElement('p'), job = jobById(proposal.jobId);
+      row.appendChild(textNode('span', job.name + ', ' + proposal.windowId + ': период 1 с, пауза ' + proposal.newRepeatPause +
+        ' с; интервал ' + proposal.nominalIntervalBefore + ' → ' + proposal.nominalIntervalAfter + ' с; запусков ' + proposal.beforeCount + ' → ' + proposal.afterCount + '. '));
+      var button = textNode('button', 'Принять в черновик'); button.type = 'button';
+      button.addEventListener('click', function () {
+        if (control || pendingApply) { return; }
+        var window = windowById(job, proposal.windowId); window.repeatPeriod = 1; window.repeatPause = proposal.newRepeatPause;
+        proposals = []; renderProposals(); render(); notify();
+      }); row.appendChild(button); container.appendChild(row);
+    });
+  }
+  function optimize() {
+    if (control || pendingApply) { return; }
+    byId('optimizationNotice').hidden=false;
+    byId('optimizationNotice').textContent='Проверяем сдвиги заданий с подтвержденной историей…';
+    control = {offerPause: !!draft.config.offerPause, onProgress: function (progress) {
+      byId('status').textContent = 'Анти-пик: окон ' + progress.completedWindows + '/' + progress.totalWindows + '; фаз ' + progress.evaluated;
+    }};
+    bridge('draftChanged', {modifiedJobs: changes(), viewState: viewState(), optimizing: true}); updateButtons();
+    core.optimizePacket(draft, baseline, control).then(function (result) {
+      control = null;
+      if (!result.cancelled) {
+        draft = result.packet; proposals = result.pauseProposals;
+        byId('optimizationResult').textContent = 'Максимум одновременно: было ' + result.before.peak + ', стало ' + result.after.peak +
+          '.\nВыше лимита: было ' + durationText(result.before.overloadSeconds) + ', стало ' + durationText(result.after.overloadSeconds) +
+          '.\nОценка равномерности: ' + result.before.objective + ' → ' + result.after.objective + '.';
+        var names=Object.create(null);draft.jobs.forEach(function (job) {names[job.id]=job.name;});
+        result.excluded.filter(function (entry) {return entry.code!=='disabled';}).forEach(function (entry) {
+          byId('optimizationResult').textContent+='\n'+names[entry.jobId]+': '+entry.reason;
+        });
+      } else { byId('optimizationResult').textContent = 'Расчет отменен, черновик сохранен.'; }
+      byId('optimizationNotice').textContent=core.optimizationSummary(result);
+      render(); renderProposals(); notify('optimizationFinished', {cancelled: result.cancelled});
+    }).catch(function (error) { control = null; updateButtons(); byId('status').textContent = error.message;
+      byId('optimizationNotice').textContent='Не удалось распределить запуски: '+error.message;
+      bridge('optimizationFinished', {modifiedJobs: changes(), viewState: viewState(), error: error.message, cancelled: true}); });
+  }
+  function exportHTML() {
+    var report = copy(draft); report.config.offlineReport = true; report.documentGeneration = 'offline';
+    report.preferences=preferences();
+    var html = document.documentElement.cloneNode(true), oldData = html.querySelector('#scheduler4000-data');
+    if (oldData) { oldData.remove(); }
+    ['heatmap','timeline','jobDetails','pauseProposals'].forEach(function (id) { clearNode(html.querySelector('#' + id)); });
+    var data = document.createElement('script'); data.id = 'scheduler4000-data'; data.type = 'application/json';
+    data.textContent = core.safeJSON(report); html.querySelector('body').appendChild(data);
+    return '<!doctype html>\n' + html.outerHTML;
+  }
+  window.requestSimulatorAction = function (action) {
+    if (!draft) { throw new Error('Сначала загрузите данные.'); }
+    if (action === 'cancel') { if (control) { control.cancelled = true; } return 'JS_OK'; }
+    if (action === 'optimize') { optimize(); return 'JS_OK'; }
+    if (action === 'rollback') {
+      if (!control && !pendingApply) { var revision = draft.revision, view = viewState();
+        if (!draft.config.offlineReport) {baseline.jobs=baseline.jobs.filter(function (job) {return !job.isNew;});}
+        draft = copy(baseline); draft.revision = revision;
+        draft.config = view.config; draft.jobs.forEach(function (job) { job.pinned = view.pinnedJobIds.indexOf(job.id) !== -1; });
+        proposals = []; renderProposals(); render(); notify(); }
+      return 'JS_OK';
+    }
+    if (action === 'apply') {
+      if (draft.config.offlineReport || control || !changes().length) { return 'JS_OK'; }
+      if (!pendingApply) { pendingApply = uuid(); }
+      bridge('applySchedules', {requestId: pendingApply, modifiedJobs: changes()}); updateButtons(); return 'JS_OK';
+    }
+    if (action === 'export') {
+      var html = exportHTML();
+      if (draft.config.offlineReport) {
+        var url = URL.createObjectURL(new Blob([html], {type: 'text/html;charset=utf-8'}));
+        var anchor = document.createElement('a'); anchor.href = url; anchor.download = 'scheduler4000.html'; anchor.click();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      } else { bridge('exportSnapshot', {html: html}); }
+      return 'JS_OK';
+    }
+    throw new Error('Неизвестная команда симулятора.');
+  };
+  window.updateSimulatorSettings = function (text) {
+    if (!draft || control || pendingApply) { return 'JS_OK'; }
+    var settings = JSON.parse(text); core.parseMoment(settings.simulationDate);
+    var dateChanged = settings.simulationDate !== draft.config.simulationDate;
+    var recalculate = dateChanged || settings.durationMode !== draft.config.durationMode ||
+      settings.fixedDurationSeconds !== draft.config.fixedDurationSeconds;
+    Object.keys(settings).forEach(function (key) { draft.config[key] = settings[key]; });
+    var begin = core.parseMoment(draft.config.simulationDate);
+    if (dateChanged) {
+      guideTime=null;byId('timeGuide').hidden=true;
+      range = {start: begin * 1000, end: (begin + 21600) * 1000};
+      timeline.setOptions({min: begin * 1000, max: (begin + 86400) * 1000});
+      timeline.setWindow(range.start, range.end, {animation: false});
+    }
+    if (recalculate) { render(); }
+    else {
+      forecast.load = core.analyzeConcurrency(forecast.intervals, begin, begin + 86400,
+        draft.config.maxThreadsThreshold, draft.config.resolutionSeconds); updateSummary();
+    }
+    notify(); return 'JS_OK';
+  };
+  window.simulatorServerReply = function (text) {
+    var reply = JSON.parse(text);
+    if (reply.status === 'applied' && reply.requestId === pendingApply) { pendingApply = null; window.initSimulator(JSON.stringify(reply.packet)); }
+    else { if (reply.status === 'rejected') { pendingApply = null; } byId('status').textContent = reply.message; updateButtons(); }
+    return 'JS_OK';
+  };
+  window.exportSimulatorHTML = exportHTML;
+  window.initJobEditor=function (text) {
+    var job=JSON.parse(text);editorDocument=true;
+    draft={config:{offlineReport:false},jobs:[job]};baseline=copy(draft);openScheduleEditor(job.id);
+    prepareCreationEditor(job);return 'JS_OK';
+  };
+  window.acceptNewSimulatorJob=function (text) {
+    if (!draft || draft.config.offlineReport || control || pendingApply) {throw new Error('Добавление сейчас недоступно.');}
+    var job=JSON.parse(text);
+    if (!job.isNew || jobById(job.id)) {throw new Error('Некорректное или повторное добавление задания.');}
+    baseline.jobs.unshift(copy(job));draft.jobs.unshift(copy(job));
+    render();notify();return 'JS_OK';
+  };
+  window.openSimulatorJobEditor=function (id) {openScheduleEditor(id);return 'JS_OK';};
+  window.acceptDetailedSchedule = function (text) {
+    var result=JSON.parse(text), original=jobById(result.id);
+    if (!original || control || pendingApply) { throw new Error('Редактирование сейчас недоступно.'); }
+    var job=Object.assign({},original,{schedule:result.schedule,scheduleToken:result.scheduleToken,editorBaseline:copy(result.schedule)});
+    if(typeof result.enabled==='boolean') {job.enabled=result.enabled;}
+    publishEditedJob(job);if(isEditorOpen()&&editorJobId===job.id) {editorPublished=true;openScheduleEditor(job.id,true);}return 'JS_OK';
+  };
+  window.initSimulator = function (text) {
+    var packet = JSON.parse(text);
+    if (packet.protocolVersion !== 1 || !Array.isArray(packet.jobs)) { throw new Error('Неподдерживаемый пакет симулятора.'); }
+    if (packet.documentGeneration && packet.documentGeneration !== generation && !packet.config.offlineReport) {
+      throw new Error('Устаревшее поколение HTML.');
+    }
+    if (control) { control.cancelled = true; control = null; }
+    byId('optimizationNotice').hidden=true;byId('optimizationResult').textContent='';
+    setEditorOpen(false);editorOriginal=null;editorWorking=null;editorPublished=false;
+    byId('dragMarker').hidden = true;
+    guideTime=null;byId('timeGuide').hidden=true;
+    baseline = packet; draft = copy(packet); pendingApply = null; proposals = [];factSource=null;
+    var begin = core.parseMoment(draft.config.simulationDate); range = {start: begin * 1000, end: (begin + 21600) * 1000};
+    var saved=packet.preferences;
+    if(saved) {byId('enabledOnly').checked=saved.enabledOnly;byId('grouping').value=saved.grouping;byId('filter').value=saved.query;
+      byId('technicalNames').checked=saved.technicalNames;draft.jobs.forEach(function (job) {job.pinned=saved.pinnedJobIds.indexOf(job.id)!==-1;});
+      range={start:(begin+saved.rangeStartSeconds)*1000,end:(begin+saved.rangeStartSeconds+saved.rangeSpanSeconds)*1000};}
+    if (timeline) { timeline.destroy(); } if (groupView) { groupView.dispose(); } if (chart) { chart.dispose(); }
+    clearNode(byId('timeline')); clearNode(byId('heatmap'));
+    byId('heatmap').removeAttribute('_echarts_instance_');
+    items = new vis.DataSet(); groups = new vis.DataSet(); visibleGroups = Object.create(null);
+    groupView = new vis.DataView(groups, {filter:function (group) { return !!visibleGroups[group.id]; }});
+    timeline = new vis.Timeline(byId('timeline'), items, groupView, {start: range.start, end: range.end, min: begin * 1000, max: (begin + 86400) * 1000,
+      height:'100%', stack: false, verticalScroll: true, horizontalScroll:false, zoomKey:'ctrlKey',
+      itemsAlwaysDraggable:{item:true,range:false},
+      zoomMin: 300000, zoomMax: 86400000, groupOrder:'order', locale: 'ru', orientation:{axis:'top',item:'top'},
+      moment: function (date) { return vis.moment(date).utc(); }, showCurrentTime: false,
+      editable: {updateTime: true, updateGroup: false, remove: false, add: false, overrideItems: false},
+      snap: function (date) { return new Date(Math.round(date.valueOf() / 1000) * 1000); }, onMoving: previewMove, onMove: finishMove});
+    chart = echarts.init(byId('heatmap'));
+    timeline.on('changed',function () {alignTimeAxes();scheduleRunPaint();});
+    timeline.on('scroll',scheduleRunPaint);timeline.on('verticalDrag',scheduleRunPaint);
+    timeline.on('rangechange', function (event) {
+      if (syncingRange) { return; }
+      setRange(event.start.valueOf(),event.end.valueOf(),'timeline');
+    });
+    chart.on('datazoom',function (event) {
+      if (syncingRange) { return; }
+      var zoom=event.batch ? event.batch[0] : event, day=core.parseMoment(draft.config.simulationDate)*1000;
+      if (Number.isFinite(zoom.startValue)&&Number.isFinite(zoom.endValue)) { setRange(zoom.startValue,zoom.endValue,'chart'); }
+      else if (Number.isFinite(zoom.start)&&Number.isFinite(zoom.end)) {
+        setRange(day+zoom.start/100*86400000,day+zoom.end/100*86400000,'chart');
+      }
+    });
+    render(); renderProposals(); alignTimeAxes();
+    setTimeout(function () { timeline.redraw(); chart.resize(); setTimeout(function () {
+      bridge('ready', {renderedIntervals: items.length, viewState: viewState()});
+    }, 100); }, 100);
+    return 'JS_OK';
+  };
+  ['optimize','cancel','rollback','apply','export'].forEach(function (action) {
+    byId(action).disabled = true;
+    byId(action).addEventListener('click', function () { window.requestSimulatorAction(action); });
+  });
+  byId('filter').addEventListener('input', function () {
+    if (!draft) { return; } clearTimeout(filterTimer);
+    filterTimer = setTimeout(function () { render(false); savePreferences(); },120);
+  });
+  byId('grouping').addEventListener('change', function () { if (draft) { buildGroups(); applyFilter(); savePreferences(); } });
+  byId('enabledOnly').addEventListener('change', function () { if (draft) { render(false); savePreferences(); } });
+  byId('timeScroll').addEventListener('scroll', function () {
+    if (!draft || !range) { return; }
+    var scroll=byId('timeScroll'), maximum=scroll.scrollWidth-scroll.clientWidth;
+    if (maximum<=0 || Math.abs(scroll.scrollLeft-lastScrollLeft)<0.5) { return; }
+    lastScrollLeft=scroll.scrollLeft;
+    var width=range.end-range.start, begin=core.parseMoment(draft.config.simulationDate)*1000;
+    var start=begin+scroll.scrollLeft/maximum*(86400000-width);
+    setRange(start,start+width,'scrollbar');
+  });
+  byId('panLeft').addEventListener('click',function () { if (draft) { shiftRange(-1); } });
+  byId('panRight').addEventListener('click',function () { if (draft) { shiftRange(1); } });
+  byId('zoomIn').addEventListener('click',function () { if (draft) { zoomRange(0.5); } });
+  byId('zoomOut').addEventListener('click',function () { if (draft) { zoomRange(2); } });
+  byId('showDay').addEventListener('click',function () { if (draft) {
+    var begin=core.parseMoment(draft.config.simulationDate)*1000;setRange(begin,begin+86400000);
+  }});
+  byId('openDetails').addEventListener('click',function () { if(draft){detailsTable();}byId('detailsPanel').hidden=false; });
+  byId('closeDetails').addEventListener('click',function () { byId('detailsPanel').hidden=true; });
+  byId('technicalNames').addEventListener('change',function () { if(draft){detailsTable();savePreferences();} });
+  byId('timeline').addEventListener('mousemove',runTooltip);
+  byId('heatmap').addEventListener('contextmenu',function (event) {toggleTimeGuide(event,true);},true);
+  byId('timeline').addEventListener('contextmenu',function (event) {toggleTimeGuide(event,false);},true);
+  byId('timeline').addEventListener('mouseleave',function () {byId('ganttTooltip').hidden=true;});
+  byId('timeline').addEventListener('mousedown',function (event) {
+    var node=event.target;
+    while (node && node!==byId('timeline')) {
+      if ((' '+node.className+' ').indexOf(' start-handle ')!==-1) {
+        var content=node.querySelector('[data-scheduler-handle]');
+        if (content) { beginHandleDrag(event,content.getAttribute('data-scheduler-handle')); }
+        return;
+      }
+      node=node.parentNode;
+    }
+  },true);
+  byId('saveEditor').addEventListener('click',saveScheduleEditor);
+  byId('cancelEditor').addEventListener('click',cancelScheduleEditor);
+  byId('detailedSchedule').addEventListener('click',function () {
+    if (saveScheduleEditor(false) && !editorDocument) {bridge('editSchedule',{jobId:editorJobId});}
+  });
+  window.addEventListener('resize', function () { if (chart) { chart.resize(); timeline.redraw(); alignTimeAxes(); updateRangeControls(); drawCollisionBands(); } });
+  function openReport() {
+    var reportData = byId('scheduler4000-data');
+    if (reportData) { window.initSimulator(reportData.textContent); }
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', openReport); }
+  else { openReport(); }
+}());
+</script></body></html>

@@ -1,0 +1,1798 @@
+[
+{
+"name": "default-once",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 0,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T00:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T12:00:00",
+"lastStart": "2026-11-10T00:00:00",
+"lastEnd": "2026-11-10T00:00:10",
+"expected": false
+},
+{
+"at": "2026-11-11T00:00:00",
+"lastStart": "2026-11-10T00:00:00",
+"lastEnd": "2026-11-10T00:00:10",
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "daily",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T00:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T12:00:00",
+"lastStart": "2026-11-10T00:00:00",
+"lastEnd": "2026-11-10T00:00:10",
+"expected": false
+},
+{
+"at": "2026-11-11T00:00:00",
+"lastStart": "2026-11-10T00:00:00",
+"lastEnd": "2026-11-10T00:00:10",
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "every-two-days",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 2,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T08:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T08:00:00",
+"lastStart": "2026-11-09T23:00:00",
+"lastEnd": "2026-11-09T23:01:00",
+"expected": false
+},
+{
+"at": "2026-11-11T00:00:00",
+"lastStart": "2026-11-09T23:00:00",
+"lastEnd": "2026-11-09T23:01:00",
+"expected": true
+},
+{
+"at": "2026-11-11T23:00:00",
+"lastStart": "2026-11-09T23:00:00",
+"lastEnd": "2026-11-09T23:01:00",
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "date-bounds",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": "2026-11-10",
+"endDate": "2026-11-11",
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-09T23:59:59",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-10T00:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-11T23:59:59",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-12T00:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "weekdays",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [
+1,
+3,
+5
+],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-09T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-11T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-14T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "fortnight",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [
+1,
+3
+],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 2,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-09T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-11T12:00:00",
+"lastStart": "2026-11-09T08:00:00",
+"lastEnd": "2026-11-09T08:01:00",
+"expected": false
+},
+{
+"at": "2026-11-16T12:00:00",
+"lastStart": "2026-11-09T08:00:00",
+"lastEnd": "2026-11-09T08:01:00",
+"expected": false
+},
+{
+"at": "2026-11-23T00:00:00",
+"lastStart": "2026-11-09T08:00:00",
+"lastEnd": "2026-11-09T08:01:00",
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "months",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [
+2,
+11
+],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-02-28T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-03-01T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-10T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "month-day",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 10,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-09T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-10T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-11T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "last-month-day",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": -1,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-02-28T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2028-02-29T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-29T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-30T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "second-wed-fri",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [
+3,
+5
+],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 2,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-04T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-11T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-13T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-18T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "last-monday",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [
+1
+],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": -1,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-23T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-30T12:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "time-window",
+"schedule": {
+"windowId": "root",
+"startTime": "08:00:00",
+"endTime": "09:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T07:59:59",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-10T08:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T09:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T09:00:01",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "night-window",
+"schedule": {
+"windowId": "root",
+"startTime": "22:00:00",
+"endTime": "02:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 3600,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T01:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T02:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T02:00:01",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-10T21:59:59",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-10T22:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T00:00:00",
+"lastStart": "2026-11-09T23:00:00",
+"lastEnd": "2026-11-09T23:00:10",
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "night-monday",
+"schedule": {
+"windowId": "root",
+"startTime": "22:00:00",
+"endTime": "02:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 3600,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [
+1
+],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-09T01:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-09T22:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T01:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "equal-time-bounds",
+"schedule": {
+"windowId": "root",
+"startTime": "08:00:00",
+"endTime": "08:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T07:59:59",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-10T08:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T08:00:01",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "repeat-period",
+"schedule": {
+"windowId": "root",
+"startTime": "08:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 60,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T08:00:59",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": false
+},
+{
+"at": "2026-11-10T08:01:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": true
+},
+{
+"at": "2026-11-10T08:01:10",
+"lastStart": "2026-11-10T08:00:10",
+"lastEnd": "2026-11-10T08:00:20",
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "repeat-pause",
+"schedule": {
+"windowId": "root",
+"startTime": "08:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 60,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T08:01:09",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": false
+},
+{
+"at": "2026-11-10T08:01:10",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": false
+},
+{
+"at": "2026-11-10T08:00:11",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": null,
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "minimal-period-with-pause",
+"schedule": {
+"windowId": "root",
+"startTime": "08:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 1,
+"repeatPause": 60,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T08:01:19",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:20",
+"expected": false
+},
+{
+"at": "2026-11-10T08:01:20",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:20",
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "period-and-pause",
+"schedule": {
+"windowId": "root",
+"startTime": "08:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 60,
+"repeatPause": 30,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T08:01:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:40",
+"expected": false
+},
+{
+"at": "2026-11-10T08:01:10",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:40",
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "forced-finish",
+"schedule": {
+"windowId": "root",
+"startTime": "22:55:00",
+"endTime": "23:59:59",
+"completionTime": "23:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": true,
+"completionInterval": 1200,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T22:55:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T23:01:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "detailed-windows",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": [
+{
+"windowId": "daily:0",
+"startTime": "08:00:00",
+"endTime": "12:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 600,
+"repeatPause": 0
+},
+{
+"windowId": "daily:1",
+"startTime": "14:00:00",
+"endTime": "18:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 600
+}
+]
+},
+"checks": [
+{
+"at": "2026-11-10T07:59:59",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-10T08:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T13:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-10T14:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T14:00:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": true
+},
+{
+"at": "2026-11-10T14:10:00",
+"lastStart": "2026-11-10T14:00:00",
+"lastEnd": "2026-11-10T14:00:10",
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "once-after-early-start",
+"schedule": {
+"windowId": "root",
+"startTime": "08:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T08:00:00",
+"lastStart": "2026-11-10T07:00:00",
+"lastEnd": "2026-11-10T07:01:00",
+"expected": true
+},
+{
+"at": "2026-11-10T09:00:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:01:00",
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "one-day-with-repeats",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 60,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 0,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T08:01:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": true
+},
+{
+"at": "2026-11-11T00:00:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "week-boundary",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 2,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-16T00:00:00",
+"lastStart": "2026-11-06T23:00:00",
+"lastEnd": "2026-11-06T23:01:00",
+"expected": true
+},
+{
+"at": "2026-11-23T00:00:00",
+"lastStart": "2026-11-11T23:00:00",
+"lastEnd": "2026-11-11T23:01:00",
+"expected": true
+},
+{
+"at": "2026-11-22T23:59:59",
+"lastStart": "2026-11-09T08:00:00",
+"lastEnd": "2026-11-09T08:01:00",
+"expected": false
+},
+{
+"at": "2026-11-10T09:00:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:01:00",
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "zero-week-period",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 60,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 0,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T08:01:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": true
+},
+{
+"at": "2026-11-11T08:00:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": true
+},
+{
+"at": "2026-11-17T08:00:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "pause-midnight",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 10,
+"repeatPause": 60,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-11T00:00:54",
+"lastStart": "2026-11-10T23:59:50",
+"lastEnd": "2026-11-10T23:59:55",
+"expected": false
+},
+{
+"at": "2026-11-11T00:00:55",
+"lastStart": "2026-11-10T23:59:50",
+"lastEnd": "2026-11-10T23:59:55",
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "completion-boundary",
+"schedule": {
+"windowId": "root",
+"startTime": "22:00:00",
+"endTime": "00:00:00",
+"completionTime": "23:00:00",
+"startTimeSet": true,
+"endTimeSet": false,
+"completionTimeSet": true,
+"completionInterval": 0,
+"repeatPeriod": 60,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T23:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T23:00:01",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "night-completion",
+"schedule": {
+"windowId": "root",
+"startTime": "22:00:00",
+"endTime": "02:00:00",
+"completionTime": "01:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": true,
+"completionInterval": 0,
+"repeatPeriod": 60,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T00:59:59",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T01:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T01:00:01",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-10T22:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T23:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "detailed-once",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": [
+{
+"windowId": "daily:0",
+"startTime": "08:00:00",
+"endTime": "09:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0
+},
+{
+"windowId": "daily:1",
+"startTime": "14:00:00",
+"endTime": "15:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0
+}
+]
+},
+"checks": [
+{
+"at": "2026-11-10T14:00:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:01:00",
+"expected": true
+},
+{
+"at": "2026-11-10T14:01:00",
+"lastStart": "2026-11-10T14:00:00",
+"lastEnd": "2026-11-10T14:00:10",
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "detailed-overlap",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": [
+{
+"windowId": "daily:0",
+"startTime": "08:00:00",
+"endTime": "09:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 600,
+"repeatPause": 0
+},
+{
+"windowId": "daily:1",
+"startTime": "08:05:00",
+"endTime": "09:05:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 1200,
+"repeatPause": 0
+}
+]
+},
+"checks": [
+{
+"at": "2026-11-10T08:05:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": false
+},
+{
+"at": "2026-11-10T08:10:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": true
+},
+{
+"at": "2026-11-10T08:15:00",
+"lastStart": "2026-11-10T08:05:00",
+"lastEnd": "2026-11-10T08:05:10",
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "night-once",
+"schedule": {
+"windowId": "root",
+"startTime": "22:00:00",
+"endTime": "02:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 0,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T00:00:00",
+"lastStart": "2026-11-09T23:00:00",
+"lastEnd": "2026-11-09T23:01:00",
+"expected": false
+},
+{
+"at": "2026-11-10T22:00:00",
+"lastStart": "2026-11-10T01:00:00",
+"lastEnd": "2026-11-10T01:01:00",
+"expected": true
+},
+{
+"at": "2026-11-10T01:30:00",
+"lastStart": "2026-11-10T01:00:00",
+"lastEnd": "2026-11-10T01:01:00",
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "night-completion-before-midnight",
+"schedule": {
+"windowId": "root",
+"startTime": "22:00:00",
+"endTime": "02:00:00",
+"completionTime": "23:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": true,
+"completionInterval": 0,
+"repeatPeriod": 60,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T00:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-10T02:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+},
+{
+"at": "2026-11-10T22:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T23:00:01",
+"lastStart": null,
+"lastEnd": null,
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "completion-before-start",
+"schedule": {
+"windowId": "root",
+"startTime": "08:00:00",
+"endTime": "18:00:00",
+"completionTime": "07:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": true,
+"completionInterval": 0,
+"repeatPeriod": 60,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T08:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+},
+{
+"at": "2026-11-10T18:00:00",
+"lastStart": null,
+"lastEnd": null,
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "period-midnight",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 120,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-11T00:00:00",
+"lastStart": "2026-11-10T23:59:00",
+"lastEnd": "2026-11-10T23:59:10",
+"expected": false
+},
+{
+"at": "2026-11-11T00:01:00",
+"lastStart": "2026-11-10T23:59:00",
+"lastEnd": "2026-11-10T23:59:10",
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "night-one-day",
+"schedule": {
+"windowId": "root",
+"startTime": "22:00:00",
+"endTime": "02:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": true,
+"endTimeSet": true,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 60,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 0,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-11T00:00:00",
+"lastStart": "2026-11-10T23:59:00",
+"lastEnd": "2026-11-10T23:59:10",
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "multi-day-intraday",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 60,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 2,
+"repeatWeeks": 2,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T08:01:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": false
+}
+],
+"roundTrip": true
+},
+{
+"name": "repeat-days-intraday",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 60,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 2,
+"repeatWeeks": 1,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T08:01:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": false
+},
+{
+"at": "2026-11-12T08:00:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": true
+}
+],
+"roundTrip": true
+},
+{
+"name": "repeat-weeks-intraday",
+"schedule": {
+"windowId": "root",
+"startTime": "00:00:00",
+"endTime": "00:00:00",
+"completionTime": "00:00:00",
+"startTimeSet": false,
+"endTimeSet": false,
+"completionTimeSet": false,
+"completionInterval": 0,
+"repeatPeriod": 60,
+"repeatPause": 0,
+"startDate": null,
+"endDate": null,
+"daysOfWeek": [],
+"months": [],
+"repeatDays": 1,
+"repeatWeeks": 2,
+"dayOfMonth": 0,
+"weekDayInMonth": 0,
+"dailySchedules": []
+},
+"checks": [
+{
+"at": "2026-11-10T08:01:00",
+"lastStart": "2026-11-10T08:00:00",
+"lastEnd": "2026-11-10T08:00:10",
+"expected": false
+}
+],
+"roundTrip": true
+}
+]

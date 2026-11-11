@@ -1,0 +1,791 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Form xmlns="http://v8.1c.ru/8.3/xcf/logform" xmlns:app="http://v8.1c.ru/8.2/managed-application/core" xmlns:cfg="http://v8.1c.ru/8.1/data/enterprise/current-config" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcssch="http://v8.1c.ru/8.1/data-composition-system/schema" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:ent="http://v8.1c.ru/8.1/data/enterprise" xmlns:lf="http://v8.1c.ru/8.2/managed-application/logform" xmlns:style="http://v8.1c.ru/8.1/data/ui/style" xmlns:sys="http://v8.1c.ru/8.1/data/ui/fonts/system" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:web="http://v8.1c.ru/8.1/data/ui/colors/web" xmlns:win="http://v8.1c.ru/8.1/data/ui/colors/windows" xmlns:xr="http://v8.1c.ru/8.3/xcf/readable" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.20">
+	<Title>
+		<v8:item>
+			<v8:lang>ru</v8:lang>
+			<v8:content>Планировщик заданий - scheduler4000</v8:content>
+		</v8:item>
+	</Title>
+	<AutoTitle>false</AutoTitle>
+	<Width>160</Width>
+	<Height>70</Height>
+	<AutoCommandBar name="КоманднаяПанельФормы" id="-1">
+		<Autofill>false</Autofill>
+		<ChildItems>
+			<Button name="КнопкаЗагрузить" id="1">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.ЗагрузитьИПостроить</CommandName>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>Получить задания и доступную историю из базы. Несохраненный черновик потребует отдельного решения.</v8:content>
+					</v8:item>
+				</ToolTip>
+				<DefaultButton>true</DefaultButton>
+				<Picture>
+					<xr:Abs>Picture.png</xr:Abs>
+					<xr:LoadTransparent>true</xr:LoadTransparent>
+				</Picture>
+				<Representation>PictureAndText</Representation>
+				<TextColor>style:FieldSelectedTextColor</TextColor>
+				<BackColor>web:LightSlateGray</BackColor>
+				<ExtendedTooltip name="КнопкаЗагрузитьРасширеннаяПодсказка" id="2"/>
+			</Button>
+			<Button name="КнопкаОптимизировать" id="3">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.ОптимизироватьПики</CommandName>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>Подобрать более равномерное время начала. Закрепленные задания сохраняют время. Результат сначала появится в прогнозе.</v8:content>
+					</v8:item>
+				</ToolTip>
+				<Picture>
+					<xr:Abs>Picture.png</xr:Abs>
+					<xr:LoadTransparent>true</xr:LoadTransparent>
+				</Picture>
+				<Representation>PictureAndText</Representation>
+				<ExtendedTooltip name="КнопкаОптимизироватьРасширеннаяПодсказка" id="4"/>
+			</Button>
+			<Button name="КнопкаПрименить" id="5">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.ПрименитьРасписанияВБазу</CommandName>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>Записать подготовленные расписания и включение/отключение заданий в базу одним пакетом. При конфликте с другим пользователем пакет будет отклонен.</v8:content>
+					</v8:item>
+				</ToolTip>
+				<Picture>
+					<xr:Abs>Picture.png</xr:Abs>
+					<xr:LoadTransparent>true</xr:LoadTransparent>
+				</Picture>
+				<Representation>PictureAndText</Representation>
+				<ExtendedTooltip name="КнопкаПрименитьРасширеннаяПодсказка" id="6"/>
+			</Button>
+			<Button name="КнопкаОткатить" id="7">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.ОткатитьИзменения</CommandName>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>Отменить изменения прогноза с момента последней загрузки или успешного сохранения. Уже сохраненные в базе изменения эта команда не отменяет.</v8:content>
+					</v8:item>
+				</ToolTip>
+				<Picture>
+					<xr:Abs>Picture.png</xr:Abs>
+					<xr:LoadTransparent>true</xr:LoadTransparent>
+				</Picture>
+				<Representation>PictureAndText</Representation>
+				<LocationInCommandBar>InAdditionalSubmenu</LocationInCommandBar>
+				<ExtendedTooltip name="КнопкаОткатитьРасширеннаяПодсказка" id="8"/>
+			</Button>
+			<Button name="КнопкаСохранить" id="9">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.СохранитьОтчетHTML</CommandName>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>Сохранить автономный HTML с текущим прогнозом. Отчет можно открыть без интернета; расписания в базе из него не записываются.</v8:content>
+					</v8:item>
+				</ToolTip>
+				<Picture>
+					<xr:Abs>Picture.png</xr:Abs>
+					<xr:LoadTransparent>true</xr:LoadTransparent>
+				</Picture>
+				<Representation>PictureAndText</Representation>
+				<LocationInCommandBar>InAdditionalSubmenu</LocationInCommandBar>
+				<ExtendedTooltip name="КнопкаСохранитьРасширеннаяПодсказка" id="10"/>
+			</Button>
+			<Button name="КнопкаОтменаОптимизации" id="11">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.ОтменитьОптимизацию</CommandName>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>Остановить подбор времени. Черновик до начала подбора сохранится.</v8:content>
+					</v8:item>
+				</ToolTip>
+				<Picture>
+					<xr:Abs>Picture.png</xr:Abs>
+					<xr:LoadTransparent>true</xr:LoadTransparent>
+				</Picture>
+				<Representation>PictureAndText</Representation>
+				<ExtendedTooltip name="КнопкаОтменаОптимизацииРасширеннаяПодсказка" id="12"/>
+			</Button>
+			<Button name="КнопкаДобавить" id="104">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.ДобавитьЗадание</CommandName>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>Создать экземпляр существующего типа задания. Сначала он появится в прогнозе, затем сохраните его общей кнопкой.</v8:content>
+					</v8:item>
+				</ToolTip>
+				<Picture><xr:Abs>Picture.png</xr:Abs><xr:LoadTransparent>true</xr:LoadTransparent></Picture>
+				<Representation>PictureAndText</Representation>
+				<ExtendedTooltip name="КнопкаДобавитьРасширеннаяПодсказка" id="105"/>
+			</Button>
+			<Button name="КнопкаНастройки" id="13">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.ОткрытьНастройки</CommandName>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>Источник истории, период анализа, длительность и параметры прогноза.</v8:content>
+					</v8:item>
+				</ToolTip>
+				<Picture>
+					<xr:Abs>Picture.png</xr:Abs>
+					<xr:LoadTransparent>true</xr:LoadTransparent>
+				</Picture>
+				<Representation>PictureAndText</Representation>
+				<ExtendedTooltip name="КнопкаНастройкиРасширеннаяПодсказка" id="14"/>
+			</Button>
+			<Button name="КнопкаСправка" id="15">
+				<Type>CommandBarButton</Type>
+				<CommandName>Form.Command.ОткрытьСправку</CommandName>
+				<ToolTip>
+					<v8:item>
+						<v8:lang>ru</v8:lang>
+						<v8:content>Открыть инструкцию по работе с диаграммой, расписаниями и сохранением изменений.</v8:content>
+					</v8:item>
+				</ToolTip>
+				<Picture>
+					<xr:Abs>Picture.png</xr:Abs>
+					<xr:LoadTransparent>true</xr:LoadTransparent>
+				</Picture>
+				<Representation>PictureAndText</Representation>
+				<ExtendedTooltip name="КнопкаСправкаРасширеннаяПодсказка" id="16"/>
+			</Button>
+		</ChildItems>
+	</AutoCommandBar>
+	<Events>
+		<Event name="OnClose">ПриЗакрытии</Event>
+		<Event name="OnCreateAtServer">ПриСозданииНаСервере</Event>
+		<Event name="BeforeClose">ПередЗакрытием</Event>
+		<Event name="OnOpen">ПриОткрытии</Event>
+	</Events>
+	<ChildItems>
+		<UsualGroup name="ГлавныеПараметры" id="17">
+			<Group>AlwaysHorizontal</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ГлавныеПараметрыРасширеннаяПодсказка" id="18"/>
+			<ChildItems>
+				<InputField name="ДатаСимуляцииПоле" id="19">
+					<DataPath>ДатаСимуляции</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Показать день</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>День, на который строится прогноз. Изменение даты пересчитывает прогноз, но не меняет расписания в базе.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Width>12</Width>
+					<ContextMenu name="ДатаСимуляцииПолеКонтекстноеМеню" id="20"/>
+					<ExtendedTooltip name="ДатаСимуляцииПолеРасширеннаяПодсказка" id="21"/>
+					<Events>
+						<Event name="OnChange">НастройкиСимуляцииПриИзменении</Event>
+					</Events>
+				</InputField>
+				<InputField name="ЛимитПотоковПоле" id="22">
+					<DataPath>ЛимитПотоков</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Лимит одновременно работающих заданий</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Допустимое число одновременно работающих заданий. Превышения отмечены красным. Это порог для анализа, а не ограничение кластера 1С.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Width>5</Width>
+					<ContextMenu name="ЛимитПотоковПолеКонтекстноеМеню" id="23"/>
+					<ExtendedTooltip name="ЛимитПотоковПолеРасширеннаяПодсказка" id="24"/>
+					<Events>
+						<Event name="OnChange">НастройкиСимуляцииПриИзменении</Event>
+					</Events>
+				</InputField>
+				<LabelField name="СостояниеПоле" id="25">
+					<DataPath>Состояние</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Состояние</v8:content>
+						</v8:item>
+					</Title>
+					<Width>48</Width>
+					<HorizontalStretch>true</HorizontalStretch>
+					<ContextMenu name="СостояниеПолеКонтекстноеМеню" id="26"/>
+					<ExtendedTooltip name="СостояниеПолеРасширеннаяПодсказка" id="27"/>
+				</LabelField>
+			</ChildItems>
+		</UsualGroup>
+		<UsualGroup name="ВыборЗадания" id="28">
+			<Group>HorizontalIfPossible</Group>
+			<Representation>None</Representation>
+			<ShowTitle>false</ShowTitle>
+			<ExtendedTooltip name="ВыборЗаданияРасширеннаяПодсказка" id="29"/>
+			<ChildItems>
+				<InputField name="ЗаданиеДляНастройкиПоле" id="30">
+					<DataPath>ИдентификаторЗаданияДляНастройки</DataPath>
+					<Title>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Изменить задание</v8:content>
+						</v8:item>
+					</Title>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Выберите любое задание, в том числе отключенное, и откройте его расписание. Это также доступно нажатием на название в диаграмме.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<DropListButton>true</DropListButton>
+					<TextEdit>false</TextEdit>
+					<ListChoiceMode>true</ListChoiceMode>
+					<Width>55</Width>
+					<ContextMenu name="ЗаданиеДляНастройкиПолеКонтекстноеМеню" id="31"/>
+					<ExtendedTooltip name="ЗаданиеДляНастройкиПолеРасширеннаяПодсказка" id="32"/>
+				</InputField>
+				<Button name="ОткрытьРасписаниеКнопка" id="33">
+					<CommandName>Form.Command.НастроитьВыбранноеЗадание</CommandName>
+					<ToolTip>
+						<v8:item>
+							<v8:lang>ru</v8:lang>
+							<v8:content>Время, частота, активность и подробный календарь выбранного задания. Изменения сначала появятся в прогнозе.</v8:content>
+						</v8:item>
+					</ToolTip>
+					<Picture>
+						<xr:Abs>Picture.png</xr:Abs>
+						<xr:LoadTransparent>true</xr:LoadTransparent>
+					</Picture>
+					<Representation>PictureAndText</Representation>
+					<ExtendedTooltip name="ОткрытьРасписаниеКнопкаРасширеннаяПодсказка" id="34"/>
+				</Button>
+			</ChildItems>
+		</UsualGroup>
+		<HTMLDocumentField name="ПолеHTMLДокумента" id="35">
+			<DataPath>ПолеHTML</DataPath>
+			<ReadOnly>true</ReadOnly>
+			<TitleLocation>None</TitleLocation>
+			<Width>150</Width>
+			<Height>48</Height>
+			<HorizontalStretch>true</HorizontalStretch>
+			<VerticalStretch>true</VerticalStretch>
+			<ContextMenu name="ПолеHTMLДокументаКонтекстноеМеню" id="36"/>
+			<ExtendedTooltip name="ПолеHTMLДокументаРасширеннаяПодсказка" id="37"/>
+			<Events>
+				<Event name="DocumentComplete">ПолеHTMLДокументСформирован</Event>
+				<Event name="OnClick">ПолеHTMLПриНажатии</Event>
+			</Events>
+		</HTMLDocumentField>
+	</ChildItems>
+	<Attributes>
+		<Attribute name="ДнейИстории" id="81">
+			<Type><v8:Type>xs:decimal</v8:Type><v8:NumberQualifiers><v8:Digits>1</v8:Digits><v8:FractionDigits>0</v8:FractionDigits><v8:AllowedSign>Nonnegative</v8:AllowedSign></v8:NumberQualifiers></Type>
+		</Attribute>
+		<Attribute name="Объект" id="38">
+			<Type>
+				<v8:Type>cfg:ExternalDataProcessorObject.scheduler4000</v8:Type>
+			</Type>
+			<MainAttribute>true</MainAttribute>
+		</Attribute>
+		<Attribute name="ДатаСимуляции" id="39">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Дата симуляции</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:dateTime</v8:Type>
+				<v8:DateQualifiers>
+					<v8:DateFractions>Date</v8:DateFractions>
+				</v8:DateQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ИсточникДлительности" id="40">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Источник длительности</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>30</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ПериодАнализаЖР" id="41">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Период анализа ЖР</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:StandardPeriod</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="РежимДлительности" id="42">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Режим длительности</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>20</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ДлительностьФиксированная" id="43">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Длительность фиксированная</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>12</v8:Digits>
+					<v8:FractionDigits>3</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ЛимитПотоков" id="44">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Лимит потоков</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>5</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ШагГрафика" id="45">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Шаг графика</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>2</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ПредлагатьЗаменуПериодаПаузой" id="46">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Предлагать замену периода паузой</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ПолеHTML" id="47">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Поле HTML</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="Состояние" id="48">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Состояние</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ПакетJSON" id="49">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Пакет JSON</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="АдресСнимка" id="50">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Адрес снимка</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ПоколениеHTML" id="51">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Поколение HTML</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>36</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ИдентификаторСнимка" id="52">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Идентификатор снимка</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>36</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="РевизияСнимка" id="53">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Ревизия снимка</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:decimal</v8:Type>
+				<v8:NumberQualifiers>
+					<v8:Digits>10</v8:Digits>
+					<v8:FractionDigits>0</v8:FractionDigits>
+					<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+				</v8:NumberQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ЧерновикИзменен" id="54">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Черновик изменен</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ДанныеЗагружены" id="55">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Данные загружены</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ИсторияТребуетОбновления" id="56">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>История требует обновления</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ОптимизацияВыполняется" id="57">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Оптимизация выполняется</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ПрименениеНеопределено" id="58">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Применение неопределено</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="ТаблицаЗаданий" id="59">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Таблица заданий</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>v8:ValueTable</v8:Type>
+			</Type>
+			<Columns>
+				<Column name="Идентификатор" id="60">
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>36</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Наименование" id="61">
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Метод" id="62">
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="Подсистема" id="63">
+					<Type>
+						<v8:Type>xs:string</v8:Type>
+						<v8:StringQualifiers>
+							<v8:Length>0</v8:Length>
+							<v8:AllowedLength>Variable</v8:AllowedLength>
+						</v8:StringQualifiers>
+					</Type>
+				</Column>
+				<Column name="РазмерВыборки" id="64">
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>10</v8:Digits>
+							<v8:FractionDigits>0</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="Медиана" id="65">
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>15</v8:Digits>
+							<v8:FractionDigits>3</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="P95" id="66">
+					<Type>
+						<v8:Type>xs:decimal</v8:Type>
+						<v8:NumberQualifiers>
+							<v8:Digits>15</v8:Digits>
+							<v8:FractionDigits>3</v8:FractionDigits>
+							<v8:AllowedSign>Nonnegative</v8:AllowedSign>
+						</v8:NumberQualifiers>
+					</Type>
+				</Column>
+				<Column name="Закреплено" id="67">
+					<Type>
+						<v8:Type>xs:boolean</v8:Type>
+					</Type>
+				</Column>
+			</Columns>
+		</Attribute>
+		<Attribute name="ПериодПоУмолчанию" id="68">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Период по умолчанию</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:boolean</v8:Type>
+			</Type>
+		</Attribute>
+		<Attribute name="НастройкиПредставленияJSON" id="69">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Настройки представления JSON</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>0</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+		<Attribute name="ИдентификаторЗаданияДляНастройки" id="70">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Идентификатор задания для настройки</v8:content>
+				</v8:item>
+			</Title>
+			<Type>
+				<v8:Type>xs:string</v8:Type>
+				<v8:StringQualifiers>
+					<v8:Length>36</v8:Length>
+					<v8:AllowedLength>Variable</v8:AllowedLength>
+				</v8:StringQualifiers>
+			</Type>
+		</Attribute>
+	</Attributes>
+	<Commands>
+		<Command name="ДобавитьЗадание" id="80">
+			<Title><v8:item><v8:lang>ru</v8:lang><v8:content>Добавить задание</v8:content></v8:item></Title>
+			<Action>ДобавитьЗадание</Action>
+		</Command>
+		<Command name="ЗагрузитьИПостроить" id="71">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>1. Загрузить задания</v8:content>
+				</v8:item>
+			</Title>
+			<Action>ЗагрузитьИПостроить</Action>
+		</Command>
+		<Command name="ОптимизироватьПики" id="72">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>2. Распределить запуски</v8:content>
+				</v8:item>
+			</Title>
+			<Action>ОптимизироватьПики</Action>
+		</Command>
+		<Command name="ПрименитьРасписанияВБазу" id="73">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>3. Сохранить расписания</v8:content>
+				</v8:item>
+			</Title>
+			<Action>ПрименитьРасписанияВБазу</Action>
+		</Command>
+		<Command name="ОткатитьИзменения" id="74">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Отменить изменения</v8:content>
+				</v8:item>
+			</Title>
+			<Action>ОткатитьИзменения</Action>
+		</Command>
+		<Command name="СохранитьОтчетHTML" id="75">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Сохранить отчет</v8:content>
+				</v8:item>
+			</Title>
+			<Action>СохранитьОтчетHTML</Action>
+		</Command>
+		<Command name="ОтменитьОптимизацию" id="76">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Остановить расчет</v8:content>
+				</v8:item>
+			</Title>
+			<Action>ОтменитьОптимизацию</Action>
+		</Command>
+		<Command name="НастроитьВыбранноеЗадание" id="77">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Открыть расписание</v8:content>
+				</v8:item>
+			</Title>
+			<Action>НастроитьВыбранноеЗадание</Action>
+		</Command>
+		<Command name="ОткрытьНастройки" id="78">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Настройки</v8:content>
+				</v8:item>
+			</Title>
+			<Action>ОткрытьНастройки</Action>
+		</Command>
+		<Command name="ОткрытьСправку" id="79">
+			<Title>
+				<v8:item>
+					<v8:lang>ru</v8:lang>
+					<v8:content>Справка</v8:content>
+				</v8:item>
+			</Title>
+			<Action>ПоказатьИнструкцию</Action>
+		</Command>
+	</Commands>
+</Form>

@@ -1,0 +1,36 @@
+{
+  "title": "Как пользоваться планировщиком",
+  "properties": {
+    "commandBarLocation": "None",
+    "height": 40,
+    "width": 110,
+    "autoTitle": false
+  },
+  "events": {
+    "OnCreateAtServer": "ПриСозданииНаСервере"
+  },
+  "elements": [
+    {
+      "width": 108,
+      "verticalStretch": true,
+      "titleLocation": "none",
+      "html": "ПолеИнструкции",
+      "readOnly": true,
+      "height": 25,
+      "horizontalStretch": true,
+      "path": "ПолеHTML"
+    }
+  ],
+  "attributes": [
+    {
+      "name": "Объект",
+      "main": true,
+      "type": "ExternalDataProcessorObject.scheduler4000"
+    },
+    {
+      "type": "string",
+      "name": "ПолеHTML"
+    }
+  ],
+  "commands": []
+}

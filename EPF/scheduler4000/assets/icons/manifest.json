@@ -1,0 +1,53 @@
+{
+  "files": [
+    {
+      "name": "add.png",
+      "sha256": "d98cff3d222be764416ea5518c8d79e74ec37003155f899f4e0ad17d8567ae18"
+    },
+    {
+      "name": "calendar.png",
+      "sha256": "b896932304401e8ee2848dcc1e5a101db4d4bec4792d53cf0bc28a1bf6134729"
+    },
+    {
+      "name": "close.png",
+      "sha256": "2ff082b104ac84ca49d5a2396547be5fbb3ded3ab519402efab9430688a79583"
+    },
+    {
+      "name": "distribute.png",
+      "sha256": "8faa8222156f5529abb7dbbc35d1ba796c305efe598fc933966c928a7433059d"
+    },
+    {
+      "name": "dog.png",
+      "sha256": "d59aee7f0cfda843cf1adb4abe56c4bb77e2b4d3cb0c8791f2f5eee9d1da73da"
+    },
+    {
+      "name": "export.png",
+      "sha256": "daf5cdc14837fd47d6a9d5c0a2ecb631785168933b6430ddfc2a371485d40905"
+    },
+    {
+      "name": "help.png",
+      "sha256": "fa9159c69c2452e3cb8de42bc51b5747caee966b36dccf5104de6df39a671c86"
+    },
+    {
+      "name": "save.png",
+      "sha256": "80d6f7bfb4844fd6f604eace8170da2b2dda6923639508901e515f2d972b7db7"
+    },
+    {
+      "name": "settings.png",
+      "sha256": "fdf0dd03788063b61e477e5e021dccb32ce8b89b1373fc29bd383c4f0a7c58f1"
+    },
+    {
+      "name": "stop.png",
+      "sha256": "7d3ef044ae143ef35346037c1f61735c4189879f1cdbe63348151ab71ae16324"
+    },
+    {
+      "name": "undo.png",
+      "sha256": "c2da6ee0b310000febc9e298bee3d628414a7a20de4514049c07ce103932e5c1"
+    }
+  ],
+  "dogSourceSha256": "8768ed97298d50ba5f84ff46a02f6e28baf8f346fccc149bd20d26cffb3f3b9d",
+  "size": "16x16",
+  "palette": "Черно-серые пиктограммы; собака сохраняет цвета исходника PostMegaMan",
+  "dogSource": "EPF/PostMegaMan/Forms/Форма/Ext/Form/Items/Отправить/Picture.png",
+  "primaryButtonColor": "web:LightSlateGray"
+}

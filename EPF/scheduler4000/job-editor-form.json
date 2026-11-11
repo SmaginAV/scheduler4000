@@ -1,0 +1,64 @@
+{
+  "title": "Настройка задания",
+  "properties": {
+    "height": 33,
+    "autoTitle": false,
+    "commandBarLocation": "None",
+    "width": 90
+  },
+  "events": {
+    "OnCreateAtServer": "ПриСозданииНаСервере"
+  },
+  "parameters": [
+    {
+      "name": "Данные"
+    }
+  ],
+  "elements": [
+    {
+      "titleLocation": "none",
+      "events": {
+        "DocumentComplete": "ПолеНастройкиДокументСформирован",
+        "OnClick": "ПолеНастройкиПриНажатии"
+      },
+      "path": "ПолеHTML",
+      "horizontalStretch": true,
+      "width": 86,
+      "height": 31,
+      "html": "ПолеНастройки",
+      "readOnly": true,
+      "verticalStretch": true
+    }
+  ],
+  "attributes": [
+    {
+      "name": "Объект",
+      "main": true,
+      "type": "ExternalDataProcessorObject.scheduler4000"
+    },
+    {
+      "type": "string",
+      "name": "Наименование"
+    },
+    {
+      "type": "boolean",
+      "name": "Включено"
+    },
+    {
+      "name": "Расписание"
+    },
+    {
+      "type": "string",
+      "name": "ПолеHTML"
+    },
+    {
+      "type": "string",
+      "name": "ПакетJSON"
+    },
+    {
+      "type": "string",
+      "name": "ИсходныйПакетJSON"
+    }
+  ],
+  "commands": []
+}

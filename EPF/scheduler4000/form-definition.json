@@ -1,0 +1,387 @@
+{
+  "title": "Планировщик заданий - scheduler4000",
+  "properties": {
+    "autoTitle": false,
+    "width": 160,
+    "height": 70
+  },
+  "events": {
+    "OnCreateAtServer": "ПриСозданииНаСервере",
+    "BeforeClose": "ПередЗакрытием",
+    "OnOpen": "ПриОткрытии",
+    "OnClose": "ПриЗакрытии"
+  },
+  "elements": [
+    {
+      "autoCmdBar": "КоманднаяПанельФормы",
+      "autofill": false,
+      "children": [
+        {
+          "button": "КнопкаЗагрузить",
+          "command": "ЗагрузитьИПостроить",
+          "defaultButton": true,
+          "tooltip": "Получить задания и доступную историю из базы. Несохраненный черновик потребует отдельного решения.",
+          "picture": {
+            "src": "abs:Picture.png",
+            "loadTransparent": true
+          },
+          "representation": "PictureAndText",
+          "backColor": "web:LightSlateGray",
+          "textColor": "style:FieldSelectedTextColor"
+        },
+        {
+          "button": "КнопкаОптимизировать",
+          "command": "ОптимизироватьПики",
+          "tooltip": "Подобрать более равномерное время начала. Закрепленные задания сохраняют время. Результат сначала появится в прогнозе.",
+          "picture": {
+            "src": "abs:Picture.png",
+            "loadTransparent": true
+          },
+          "representation": "PictureAndText"
+        },
+        {
+          "button": "КнопкаПрименить",
+          "command": "ПрименитьРасписанияВБазу",
+          "tooltip": "Записать подготовленные расписания и включение/отключение заданий в базу одним пакетом. При конфликте с другим пользователем пакет будет отклонен.",
+          "picture": {
+            "src": "abs:Picture.png",
+            "loadTransparent": true
+          },
+          "representation": "PictureAndText"
+        },
+        {
+          "button": "КнопкаОткатить",
+          "command": "ОткатитьИзменения",
+          "locationInCommandBar": "InAdditionalSubmenu",
+          "tooltip": "Отменить изменения прогноза с момента последней загрузки или успешного сохранения. Уже сохраненные в базе изменения эта команда не отменяет.",
+          "picture": {
+            "src": "abs:Picture.png",
+            "loadTransparent": true
+          },
+          "representation": "PictureAndText"
+        },
+        {
+          "button": "КнопкаСохранить",
+          "command": "СохранитьОтчетHTML",
+          "locationInCommandBar": "InAdditionalSubmenu",
+          "tooltip": "Сохранить автономный HTML с текущим прогнозом. Отчет можно открыть без интернета; расписания в базе из него не записываются.",
+          "picture": {
+            "src": "abs:Picture.png",
+            "loadTransparent": true
+          },
+          "representation": "PictureAndText"
+        },
+        {
+          "button": "КнопкаОтменаОптимизации",
+          "command": "ОтменитьОптимизацию",
+          "tooltip": "Остановить подбор времени. Черновик до начала подбора сохранится.",
+          "picture": {
+            "src": "abs:Picture.png",
+            "loadTransparent": true
+          },
+          "representation": "PictureAndText"
+        },
+        {
+          "button": "КнопкаДобавить",
+          "command": "ДобавитьЗадание",
+          "tooltip": "Создать экземпляр существующего типа задания. Сначала он появится в прогнозе, затем сохраните его общей кнопкой.",
+          "picture": {
+            "src": "abs:Picture.png",
+            "loadTransparent": true
+          },
+          "representation": "PictureAndText"
+        },
+        {
+          "tooltip": "Источник истории, период анализа, длительность и параметры прогноза.",
+          "button": "КнопкаНастройки",
+          "command": "ОткрытьНастройки",
+          "picture": {
+            "src": "abs:Picture.png",
+            "loadTransparent": true
+          },
+          "representation": "PictureAndText"
+        },
+        {
+          "tooltip": "Открыть инструкцию по работе с диаграммой, расписаниями и сохранением изменений.",
+          "button": "КнопкаСправка",
+          "command": "ОткрытьСправку",
+          "picture": {
+            "src": "abs:Picture.png",
+            "loadTransparent": true
+          },
+          "representation": "PictureAndText"
+        }
+      ]
+    },
+    {
+      "group": "alwaysHorizontal",
+      "name": "ГлавныеПараметры",
+      "children": [
+        {
+          "input": "ДатаСимуляцииПоле",
+          "path": "ДатаСимуляции",
+          "title": "Показать день",
+          "width": 12,
+          "events": {
+            "OnChange": "НастройкиСимуляцииПриИзменении"
+          },
+          "tooltip": "День, на который строится прогноз. Изменение даты пересчитывает прогноз, но не меняет расписания в базе."
+        },
+        {
+          "input": "ЛимитПотоковПоле",
+          "path": "ЛимитПотоков",
+          "title": "Лимит одновременно работающих заданий",
+          "width": 5,
+          "events": {
+            "OnChange": "НастройкиСимуляцииПриИзменении"
+          },
+          "tooltip": "Допустимое число одновременно работающих заданий. Превышения отмечены красным. Это порог для анализа, а не ограничение кластера 1С."
+        },
+        {
+          "labelField": "СостояниеПоле",
+          "path": "Состояние",
+          "title": "Состояние",
+          "width": 48,
+          "horizontalStretch": true
+        }
+      ],
+      "showTitle": false,
+      "representation": "None"
+    },
+    {
+      "group": "horizontalIfPossible",
+      "name": "ВыборЗадания",
+      "children": [
+        {
+          "input": "ЗаданиеДляНастройкиПоле",
+          "path": "ИдентификаторЗаданияДляНастройки",
+          "title": "Изменить задание",
+          "width": 55,
+          "dropListButton": true,
+          "tooltip": "Выберите любое задание, в том числе отключенное, и откройте его расписание. Это также доступно нажатием на название в диаграмме.",
+          "listChoiceMode": true,
+          "textEdit": false
+        },
+        {
+          "button": "ОткрытьРасписаниеКнопка",
+          "command": "НастроитьВыбранноеЗадание",
+          "tooltip": "Время, частота, активность и подробный календарь выбранного задания. Изменения сначала появятся в прогнозе.",
+          "picture": {
+            "src": "abs:Picture.png",
+            "loadTransparent": true
+          },
+          "representation": "PictureAndText"
+        }
+      ],
+      "showTitle": false,
+      "representation": "None"
+    },
+    {
+      "html": "ПолеHTMLДокумента",
+      "readOnly": true,
+      "path": "ПолеHTML",
+      "titleLocation": "none",
+      "width": 150,
+      "height": 48,
+      "horizontalStretch": true,
+      "verticalStretch": true,
+      "events": {
+        "DocumentComplete": "ПолеHTMLДокументСформирован",
+        "OnClick": "ПолеHTMLПриНажатии"
+      }
+    }
+  ],
+  "attributes": [
+    {
+      "name": "Объект",
+      "type": "ExternalDataProcessorObject.scheduler4000",
+      "main": true
+    },
+    {
+      "name": "ДатаСимуляции",
+      "type": "date"
+    },
+    {
+      "name": "ИсточникДлительности",
+      "type": "string(30)"
+    },
+    {
+      "name": "ПериодАнализаЖР",
+      "type": "StandardPeriod"
+    },
+    {
+      "name": "РежимДлительности",
+      "type": "string(20)"
+    },
+    {
+      "name": "ДлительностьФиксированная",
+      "type": "decimal(12,3,nonneg)"
+    },
+    {
+      "name": "ЛимитПотоков",
+      "type": "decimal(5,0,nonneg)"
+    },
+    {
+      "name": "ШагГрафика",
+      "type": "decimal(2,0,nonneg)"
+    },
+    {
+      "name": "ПредлагатьЗаменуПериодаПаузой",
+      "type": "boolean"
+    },
+    {
+      "name": "ПолеHTML",
+      "type": "string"
+    },
+    {
+      "name": "Состояние",
+      "type": "string"
+    },
+    {
+      "name": "ПакетJSON",
+      "type": "string"
+    },
+    {
+      "name": "АдресСнимка",
+      "type": "string"
+    },
+    {
+      "name": "ПоколениеHTML",
+      "type": "string(36)"
+    },
+    {
+      "name": "ИдентификаторСнимка",
+      "type": "string(36)"
+    },
+    {
+      "name": "РевизияСнимка",
+      "type": "decimal(10,0,nonneg)"
+    },
+    {
+      "name": "ЧерновикИзменен",
+      "type": "boolean"
+    },
+    {
+      "name": "ДанныеЗагружены",
+      "type": "boolean"
+    },
+    {
+      "name": "ИсторияТребуетОбновления",
+      "type": "boolean"
+    },
+    {
+      "name": "ОптимизацияВыполняется",
+      "type": "boolean"
+    },
+    {
+      "name": "ПрименениеНеопределено",
+      "type": "boolean"
+    },
+    {
+      "name": "ТаблицаЗаданий",
+      "type": "ValueTable",
+      "columns": [
+        {
+          "name": "Идентификатор",
+          "type": "string(36)"
+        },
+        {
+          "name": "Наименование",
+          "type": "string"
+        },
+        {
+          "name": "Метод",
+          "type": "string"
+        },
+        {
+          "name": "Подсистема",
+          "type": "string"
+        },
+        {
+          "name": "РазмерВыборки",
+          "type": "decimal(10,0,nonneg)"
+        },
+        {
+          "name": "Медиана",
+          "type": "decimal(15,3,nonneg)"
+        },
+        {
+          "name": "P95",
+          "type": "decimal(15,3,nonneg)"
+        },
+        {
+          "name": "Закреплено",
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "name": "ПериодПоУмолчанию",
+      "type": "boolean"
+    },
+    {
+      "name": "НастройкиПредставленияJSON",
+      "type": "string"
+    },
+    {
+      "name": "ИдентификаторЗаданияДляНастройки",
+      "type": "string(36)"
+    },
+    {
+      "name": "ДнейИстории",
+      "type": "decimal(1,0,nonneg)"
+    }
+  ],
+  "commands": [
+    {
+      "name": "ЗагрузитьИПостроить",
+      "action": "ЗагрузитьИПостроить",
+      "title": "1. Загрузить задания"
+    },
+    {
+      "name": "ОптимизироватьПики",
+      "action": "ОптимизироватьПики",
+      "title": "2. Распределить запуски"
+    },
+    {
+      "name": "ПрименитьРасписанияВБазу",
+      "action": "ПрименитьРасписанияВБазу",
+      "title": "3. Сохранить расписания"
+    },
+    {
+      "name": "ОткатитьИзменения",
+      "action": "ОткатитьИзменения",
+      "title": "Отменить изменения"
+    },
+    {
+      "name": "СохранитьОтчетHTML",
+      "action": "СохранитьОтчетHTML",
+      "title": "Сохранить отчет"
+    },
+    {
+      "name": "ОтменитьОптимизацию",
+      "action": "ОтменитьОптимизацию",
+      "title": "Остановить расчет"
+    },
+    {
+      "name": "НастроитьВыбранноеЗадание",
+      "action": "НастроитьВыбранноеЗадание",
+      "title": "Открыть расписание"
+    },
+    {
+      "name": "ДобавитьЗадание",
+      "action": "ДобавитьЗадание",
+      "title": "Добавить задание"
+    },
+    {
+      "name": "ОткрытьНастройки",
+      "title": "Настройки",
+      "action": "ОткрытьНастройки"
+    },
+    {
+      "name": "ОткрытьСправку",
+      "title": "Справка",
+      "action": "ПоказатьИнструкцию"
+    }
+  ]
+}

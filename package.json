@@ -1,0 +1,10 @@
+{
+  "name": "scheduler4000",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Прогноз и распределение регламентных заданий 1С",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test tests/scheduler4000/simulation.test.cjs tests/scheduler4000/navigation.test.cjs tests/scheduler4000/optimization.test.cjs tests/scheduler4000/concurrency.test.cjs tests/scheduler4000/help.test.cjs"
+  }
+}
